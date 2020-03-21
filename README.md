@@ -3,8 +3,10 @@
 |-----------------------------------|
 |        Edward Riley (emr9018)     |
 |  Trent Jacobson (AnonmyousKiddie) |
-|   Matthew Oelbaum (maeeljavanar)  |
-|          Liam Bewley (???)        |
+|      Liam Bewley (maeeljavanar)   |
+|        Matthew Oelbaum (???)      |
+|       Sayed Mobin Sadat (???)     |
+
 
 
 ## Description 
