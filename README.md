@@ -10,6 +10,6 @@
 
 
 ## Description 
-|  CSM Publications     |
+|  Publications     |
 |-----------|
 |  CRUD (Create, Read, Update, Delete) application is one that utilizes forms to retrieve and return data from MySQL database in the data layer in MySQL. |
