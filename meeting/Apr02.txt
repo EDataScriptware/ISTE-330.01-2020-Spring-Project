@@ -1,0 +1,74 @@
+18:02:51	 From Edward Riley (RIT Student) : FYI: I’m deaf. It’s harder for me to you all. Try to bear with me.
+18:03:02	 From Sayed Mobin : Hi everyone :)
+18:03:16	 From Liam Bewley : Hello
+18:03:19	 From Edward Riley (RIT Student) : Let me see if I can get Matthew.
+18:03:40	 From Edward Riley (RIT Student) : Oh and
+18:03:44	 From Edward Riley (RIT Student) : Trent is planning on dropping the course.
+18:03:50	 From Edward Riley (RIT Student) : So, it’ll be us four.
+18:04:10	 From Sayed Mobin : Good to know
+18:05:29	 From Liam Bewley : Should we make a google doc?
+18:07:10	 From Edward Riley (RIT Student) : You making one?
+18:07:30	 From Liam Bewley : I just invited you all, you should have an email
+18:07:49	 From Liam Bewley : I made a shared drive so you can probably just see it in google drive as well
+18:20:25	 From Liam Bewley : We have listed the requirements and functions as outlined, does anyone have any changes to the database or functions?
+18:21:05	 From Sayed Mobin : I don’t think
+18:22:12	 From Edward Riley (RIT Student) : I’m not sure at the moment.
+18:22:58	 From Edward Riley (RIT Student) : Privileges?
+18:24:32	 From Liam Bewley : Just as in users can only read/modify their own papers unless they are an admin? Or something more?
+18:25:29	 From Edward Riley (RIT Student) : Probably something like “Is this paper ready to be read?” or “Can this non-admin read this paper?"
+18:25:58	 From Liam Bewley : Yeah that makes sense to add
+18:26:09	 From Edward Riley (RIT Student) : “Can non-admin read this paper, if so whom?” Something like that. Let’s just get the barebones functionals down then we can decide what f*n we can add.
+18:26:34	 From Sayed Mobin : As specified in the document like a user can only read, write or update his own paper while the admin has full access to CRUD
+18:26:47	 From Sayed Mobin : That will be determined based on admin privilages
+18:26:47	 From Edward Riley (RIT Student) : Yeah. We
+18:26:58	 From Edward Riley (RIT Student) : We’re just looking to have some kind of icing on it.
+18:27:12	 From Edward Riley (RIT Student) : The question makes it sound like “What’s so unique about this database?"
+18:29:05	 From Sayed Mobin : Lets finish the code around April 12 and then we can decide for the last week before submission if everything as required was done, to work on a function or two extra?
+18:29:23	 From Edward Riley (RIT Student) : That’s okay with me.
+18:29:31	 From Liam Bewley : Sounds fair
+18:33:11	 From Liam Bewley : It doesn't seem like there is a lot of work for 4 people. After what we've all taken already, it seems like it's just some basic DAOs left, like for the configuration
+18:33:25	 From Liam Bewley : If we give that to Matthew then it seems like everything is assigned?
+18:36:52	 From Edward Riley (RIT Student) : Might be fair for everyone.
+18:40:17	 From Sayed Mobin : It sees pretty good to me so far
+18:40:21	 From Sayed Mobin : Anything we didn’t cover
+18:40:55	 From Liam Bewley : Looking over it, I think we've covered everything
+18:41:22	 From Edward Riley (RIT Student) : Looks good to go. Let me check again with Trent on MyCourses.
+18:42:05	 From Edward Riley (RIT Student) : His name is still in ClassList.
+18:42:14	 From Sayed Mobin : That would be great if he decides to stay
+18:42:34	 From Liam Bewley : Should we wait until tomorrow to submit to try and check in with him and Matthew?
+18:43:18	 From Edward Riley (RIT Student) : Matthew is unresponsive at the moment. His latest response is on Discord.
+18:44:59	 From Edward Riley (RIT Student) : I got ahold of Trent.
+18:45:03	 From Edward Riley (RIT Student) : He says he’s still in for now.
+18:45:57	 From Edward Riley (RIT Student) : I’ll go ahead and quickly put his name on documentation and we’ll just find something to do with hi.
+18:45:59	 From Edward Riley (RIT Student) : Him.*
+18:47:02	 From Sayed Mobin : I would say since he is not sure, let put his name there and in case we missed something it will go to him automatically
+18:47:14	 From Sayed Mobin : If nothing was left he can do the extra stuff
+18:47:28	 From Edward Riley (RIT Student) : I’ll put him down for help with paper object(s).
+18:48:58	 From Edward Riley (RIT Student) : This looks good now?
+18:49:05	 From Liam Bewley : This should be good for now, I'll try to get in touch with Matthew as well and then submit tomorrow around 9 PM EST so we have a little time to make changes if we think of anything
+18:49:20	 From Edward Riley (RIT Student) : Great!
+18:49:34	 From Edward Riley (RIT Student) : I’ll put this in GitHub for now.
+18:49:37	 From Sayed Mobin : Sounds good, lets give him deadline till 9pm tomorrow
+18:49:53	 From Edward Riley (RIT Student) : Anything else should we know about before hang up?
+18:49:55	 From Sayed Mobin : If he confirms we will move with this if not we will go back the way we had it
+18:50:30	 From Liam Bewley : Should we plan to meet for a progress check or something next week?
+18:50:30	 From Sayed Mobin : We should have another meeting like this next week same time for updates
+18:50:38	 From Sayed Mobin : It could be a quick meeting
+18:50:53	 From Sayed Mobin : Works for everyone?
+18:50:59	 From Liam Bewley : Yeah, that sounds good
+18:51:03	 From Edward Riley (RIT Student) : That’s fine with me. I’m just having this thinking with this project, professor just wants us to touch on many things possible.
+18:51:06	 From Edward Riley (RIT Student) : Sounds good with me.
+18:51:55	 From Sayed Mobin : To be honest with the current situation as long as we do the main requirement we will do good. This semester is a huge disadvantage to most of us
+18:52:08	 From Sayed Mobin : I’m not learning much online to be honest
+18:52:33	 From Liam Bewley : Yeah, it's a very weird situation all around
+18:52:41	 From Edward Riley (RIT Student) : I have the same feelings too. I’m just finding PE to be easy to do and exams easy to find resource.
+18:53:30	 From Sayed Mobin : Yeah agree
+18:54:26	 From Edward Riley (RIT Student) : Pushed.
+18:54:48	 From Edward Riley (RIT Student) : Anything else?
+18:54:56	 From Liam Bewley : I don't think so
+18:55:07	 From Sayed Mobin : That should be it. Great job everyone. We got this together
+18:55:21	 From Liam Bewley : We can say in slack if anything changes before 9 tomorrow
+18:55:27	 From Edward Riley (RIT Student) : Alright. Have a wonderful night and rest of the week.
+18:55:29	 From Liam Bewley : Otherwise, have a good night
+18:55:35	 From Liam Bewley : You as well
+18:55:37	 From Sayed Mobin : Sounds good to me and have a great night
