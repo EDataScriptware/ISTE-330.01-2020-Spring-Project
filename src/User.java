@@ -73,7 +73,6 @@ public class User
          Scanner scnPassword = new Scanner(System.in); 
          password = scnPassword.next();
          password = toHexString(getSHA(password)); // HASHED
-         System.out.println(password);
          
          System.out.print("Verify your new password: ");
          Scanner scnVerifyPassword = new Scanner(System.in); // Note: Hash the password at a later time. 
