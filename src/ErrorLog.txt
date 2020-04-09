@@ -1,0 +1,9 @@
+Reason: Unknown - please refer to Cause below.
+Cause: java.sql.SQLException: Access denied for user 'root'@'localhost' (using password: YES)
+
+Reason: Unknown - please refer to Cause below.
+Cause: null
+
+Reason: Unknown - please refer to Cause below.
+Cause: null
+
