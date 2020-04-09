@@ -14,7 +14,7 @@ public class MySQLDatabase
    static String hostMySQL = "jdbc:mysql://localhost/CSM?";
    static String driver = "com.mysql.jdbc.Driver";
    static String user = "root";
-   static String password = "students";
+   static String password = "student";
    static String databaseType = "MySQL";  
    static private Connection connection = null; 
    
@@ -28,7 +28,6 @@ public class MySQLDatabase
          Class.forName(driver);     
          
          Connection connection = DriverManager.getConnection(hostMySQL, user, password);
-
          return connection;      
       }
       catch (SQLException e)
