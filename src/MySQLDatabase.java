@@ -14,7 +14,7 @@ public class MySQLDatabase
    static String hostMySQL = "jdbc:mysql://localhost/CSM?";
    static String driver = "com.mysql.jdbc.Driver";
    static String user = "root";
-   static String password = "student";
+   static String password = "students";
    static String databaseType = "MySQL";  
    static private Connection connection = null; 
    
