@@ -9,14 +9,15 @@ public class main
    
    public static void main(String[] args) throws DLException
    {  
+      MySQLDatabase msd = new MySQLDatabase();
+   
       char choice;
       try 
       {
          
-         MySQLDatabase msd = new MySQLDatabase();
-       Connection connect =  msd.connect(); 
+         msd.connect(); 
          Papers papers = new Papers();
-         User user = new User(connect);
+         User user = new User();
       
          System.out.println("[R]egister or [L]ogin?");
          Scanner scnLoginOrRegister = new Scanner(System.in);
@@ -37,22 +38,20 @@ public class main
             System.exit(0);
          }
         
-             msd.close(connect);
+         msd.close();
       }
       catch (Exception e)
       {
       
-     msd.connect();
-      
-        
-      msd.close();
-    }
-    catch (Exception e)
-    {
-    
-    throw new DLException(e, e.getMessage());
-    }
+         msd.connect();
+         msd.close();
 
+         throw new DLException(e, e.getMessage());
+
+      }
+    
+    
+   
    }
    
    

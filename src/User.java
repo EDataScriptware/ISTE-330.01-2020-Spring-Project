@@ -39,9 +39,9 @@ public class User
    String affiliationId;
    String affilationName;
 
-   public User(Connection conn)
+   public User()
    {
-      connection = conn;
+      //connection = null;
       userID = null;
       lastName = null;
       firstName = null;
@@ -77,7 +77,7 @@ public class User
          System.out.print("Verify your new password: ");
          Scanner scnVerifyPassword = new Scanner(System.in); // Note: Hash the password at a later time. 
          verifyPassword = scnVerifyPassword.next();
-         password = toHexString(getSHA(password)); // HASHED
+         verifyPassword = toHexString(getSHA(verifyPassword)); // HASHED
       
          System.out.print("Enter your email: ");
          Scanner scnEmail = new Scanner(System.in);
@@ -101,6 +101,8 @@ public class User
          else 
          {
             System.out.println("ERROR: Password not verified! Please try again.");
+            System.out.println("Password: " + password);
+            System.out.println("Verfied Password: " + verifyPassword);
          }
       
       }

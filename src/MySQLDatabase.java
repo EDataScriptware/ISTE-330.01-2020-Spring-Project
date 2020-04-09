@@ -21,7 +21,7 @@ public class MySQLDatabase {
 
    private String driver = "com.mysql.jdbc.Driver";
    private String username = "root";
-   private String password = "student"; //need to be changed to your password
+   private String password = "students"; //need to be changed to your password
    private String dbServer = "localhost";
    private String dbName = "CSM";
 
