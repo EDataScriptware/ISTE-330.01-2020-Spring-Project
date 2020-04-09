@@ -5,16 +5,18 @@ import java.io.*;
 
 public class main
 {
-   // Issue currently exists with Scanner in register. 
+ 
    
    public static void main(String[] args) throws DLException
    {  
       char choice;
       try 
       {
+         
          MySQLDatabase msd = new MySQLDatabase();
+       Connection connect =  msd.connect(); 
          Papers papers = new Papers();
-         User user = new User();
+         User user = new User(connect);
       
          System.out.println("[R]egister or [L]ogin?");
          Scanner scnLoginOrRegister = new Scanner(System.in);
@@ -34,8 +36,8 @@ public class main
             System.out.println("Error.");
             System.exit(0);
          }
-         msd.connect(); 
-             
+        
+             msd.close(connect);
       }
       catch (Exception e)
       {
