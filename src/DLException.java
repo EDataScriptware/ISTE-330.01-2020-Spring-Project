@@ -19,6 +19,15 @@ public class DLException extends Exception
    BufferedWriter bw = null;
    PrintWriter pw = null;
 
+   public DLException() {
+      super();
+      writeLog();
+   }
+
+   public DLException(String message) {
+      super(message);
+      writeLog();
+   }
    
    public DLException(Exception _exception)
    {
@@ -50,6 +59,7 @@ public class DLException extends Exception
          if (exception.getCause() == null)
          {
             pw.println("Reason: Unknown - please refer to Cause below." + "\nCause: " + message + "\n");
+            exception.printStackTrace(pw);
          }
          else 
          {

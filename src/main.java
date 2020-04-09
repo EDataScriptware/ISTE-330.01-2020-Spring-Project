@@ -14,10 +14,10 @@ public class main
       Papers papers = new Papers();
      
       
-     Connection connect = msd.connect();    
+     msd.connect();
       
         
-      msd.close(connect);      
+      msd.close();
     }
     catch (Exception e)
     {
