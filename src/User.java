@@ -39,9 +39,9 @@ public class User
    String affiliationId;
    String affilationName;
 
-   public User()
+   public User(Connection conn)
    {
-      //connection = null;
+      connection = conn;
       userID = null;
       lastName = null;
       firstName = null;
@@ -128,6 +128,7 @@ public class User
          }
       }
       catch(Exception ex){
+         ex.printStackTrace();
          System.out.println("SQLException: " + ex.getMessage());
          System.out.println("SQLException: " + ex);
       }
@@ -146,6 +147,7 @@ public class User
       
       }
       catch(Exception ex){
+         ex.printStackTrace();
          System.out.println("SQLException: " + ex.getMessage());
          System.out.println("SQLException: " + ex);
       }
@@ -163,7 +165,7 @@ public class User
          while(result.next()){
          
             for(int i = 0; i < totalFeilds; i++){
-            //    System.out.println("result: " + result.getObject(i + 1));
+                //System.out.println("result: " + result.getObject(i + 1));
                reSet.add(result.getObject(i + 1));
             }
             row++;
@@ -172,6 +174,7 @@ public class User
          stmt.close();
       }
       catch(Exception ex){
+         ex.printStackTrace();
          System.out.println("error " + ex);
       }
       return reSet;

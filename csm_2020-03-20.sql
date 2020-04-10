@@ -1107,7 +1107,7 @@ CREATE TABLE Users (
   lastName varchar(45) DEFAULT NULL,
   firstName varchar(45) DEFAULT NULL,
   email varchar(45) DEFAULT NULL,
-  pswd varchar(45) DEFAULT NULL,
+  pswd varchar(65) DEFAULT NULL,
   canReview varchar(45) DEFAULT NULL,
   expiration varchar(20) DEFAULT NULL,
   isAdmin int(11) DEFAULT '0',

@@ -17,7 +17,7 @@ public class main
          
          msd.connect(); 
          Papers papers = new Papers();
-         User user = new User();
+         User user = new User(msd.getConnection());
       
          System.out.println("[R]egister or [L]ogin?");
          Scanner scnLoginOrRegister = new Scanner(System.in);
@@ -42,7 +42,7 @@ public class main
       }
       catch (Exception e)
       {
-      
+
          msd.connect();
          msd.close();
 

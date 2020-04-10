@@ -21,7 +21,7 @@ public class MySQLDatabase {
 
    private String driver = "com.mysql.jdbc.Driver";
    private String username = "root";
-   private String password = "students"; //need to be changed to your password
+   private String password = "l0t5W@R5"; //need to be changed to your password
    private String dbServer = "localhost";
    private String dbName = "CSM";
 
@@ -36,6 +36,14 @@ public class MySQLDatabase {
       this.dbName = dbName;
 
       inTrans = false;
+   }
+
+   /**
+    *
+    * @return Connection
+    */
+   public Connection getConnection() {
+      return this.connection;
    }
 
    /**
