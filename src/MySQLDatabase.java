@@ -30,17 +30,6 @@ public class MySQLDatabase {
    public String dbName = "CSM";
 
    public MySQLDatabase() {}
-   
-   
-   /**
-    * No parameters are used
-    * 
-    * @see #main
-    *
-    */
-   public static void main(String args[]) throws DLException {
-      main();
-   }
 
   /**
     * 
