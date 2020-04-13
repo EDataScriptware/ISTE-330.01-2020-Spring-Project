@@ -51,12 +51,8 @@ public class main {
          System.out.println("\n");  
 
       
-<<<<<<< HEAD
          System.out.println("[R]egister or [L]ogin? or [F]orgot Password");
-=======
          // Requests the user to pick one choice (Register or Login) 
-         System.out.println("[R]egister or [L]ogin?");
->>>>>>> c6ce21451addfdfe38a83f120c7da46a839e01d0
          Scanner scnLoginOrRegister = new Scanner(System.in);
          choice = scnLoginOrRegister.next().charAt(0);
          System.out.println(choice);
@@ -70,18 +66,12 @@ public class main {
          else if (choice == 'L') {
             user.login();
          }
-<<<<<<< HEAD
          else if (choice == 'F')
          {
             user.forgotPassword();
          }
          else 
          {
-=======
-         
-         // If program is not working, it will display error and then exit
-         else {
->>>>>>> c6ce21451addfdfe38a83f120c7da46a839e01d0
             System.out.println("Error.");
             System.exit(0);
          }

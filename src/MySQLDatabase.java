@@ -19,22 +19,10 @@ public class MySQLDatabase {
    private static String EXCEPTIONMESSAGE = "Failure to perform operation";
    private static String SQLEXCEPTIONMESSAGE = "SQL Engine Failure";
 
-<<<<<<< HEAD
-   // attributes
-   private Connection connection; //Database Connection Object
-   private boolean inTrans; //whether or not we are currently in a transaction
 
-   private String driver = "com.mysql.cj.jdbc.Driver";
-   private String username = "root";
-   private String password = "Bella1422"; //need to be changed to your password
-   private String dbServer = "localhost";
-   private String dbName = "CSM";
-=======
    // All attributes are created
    private Connection connection; // Database Connection Object
    private boolean inTrans; // Whether or not we are currently in a transaction
->>>>>>> c6ce21451addfdfe38a83f120c7da46a839e01d0
-
    public String driver = "com.mysql.jdbc.Driver";
    public String username = "root";
    public String password = "students"; // Needs to be changed to your password 
@@ -92,40 +80,21 @@ public class MySQLDatabase {
       if ( inTrans ) {
          return false;
       }
-<<<<<<< HEAD
 
-      //jdbc:mysql://<server>/<database>?user=<user>&password=<password>"
-      String connectionURI =
-              "jdbc:mysql://"
-                      + dbServer + ":3306"
-                      + "/" + dbName
-                      + "?user=" + username
-                      + "&password=" + password
-                      + "&serverTimezone=UTC";
-
-=======
-   
-      // jdbc:mysql://<server>/<database>?user=<user>&password=<password>"
       String connectionURI = "jdbc:mysql://" 
                                 + dbServer + ":3306" 
                                 + "/" + dbName + "?autoReconnect=true&useSSL=false" 
                                 + "&user=" + username 
                                 + "&password=" + password;
    
->>>>>>> c6ce21451addfdfe38a83f120c7da46a839e01d0
       try {
          // To set the driver
          Class.forName(driver);
          // To get it connected
          connection = DriverManager.getConnection(connectionURI);
-<<<<<<< HEAD
-      } catch(Exception e) {
-         System.out.println(e);
-=======
       } 
       // To catch the error and show message
       catch(Exception e) {
->>>>>>> c6ce21451addfdfe38a83f120c7da46a839e01d0
          throw new DLException(e, e.toString());
       }
       // Show that connection is successful 

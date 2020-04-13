@@ -39,7 +39,7 @@ import java.security.NoSuchAlgorithmException;
     * No parameters are used
     *
     */
-   public class User {
+public class User {
 
    // All attributes are created 
    Connection connection;
@@ -54,12 +54,10 @@ import java.security.NoSuchAlgorithmException;
    String isAdmin;// '1' for yes / '0' value for no
    String affiliationId;
    String affilationName;
-<<<<<<< HEAD
    String resetPasswordToken;
 
    public User(Connection conn)
    {
-=======
    
    
    /**
@@ -78,11 +76,8 @@ import java.security.NoSuchAlgorithmException;
     * @see #dateofExpiration
     * @see #affiliationId
     * 
-    */
-   public User (Connection conn) {
-   
+    */   
       // All attributes are created 
->>>>>>> c6ce21451addfdfe38a83f120c7da46a839e01d0
       connection = conn;
       userID = null;
       lastName = null;
@@ -93,78 +88,23 @@ import java.security.NoSuchAlgorithmException;
       canReview = null; // '1' for yes / NULL value for no
       dateOfExpiration = null;
       affiliationId = null; // '1' for yes / '0' value for no
-<<<<<<< HEAD
       resetPasswordToken = null;
    }
    
-   public void register()
-{
-   boolean repeatFlag = true;
-
-   while (repeatFlag == true)
-   {
-      System.out.println("---------REGISTER---------");
-      System.out.print("Enter your first name: ");
-      Scanner scnUser = new Scanner(System.in);
-      firstName = scnUser.next();
-
-      System.out.print("Enter your last name: ");
-      Scanner scnNamel = new Scanner(System.in);
-      lastName = scnNamel.next();
-
-      System.out.print("Enter a new password: ");
-      Scanner scnPassword = new Scanner(System.in);
-      password = scnPassword.next();
-      password = toHexString(getSHA(password)); // HASHED
-
-      System.out.print("Verify your new password: ");
-      Scanner scnVerifyPassword = new Scanner(System.in); // Note: Hash the password at a later time.
-      verifyPassword = scnVerifyPassword.next();
-      verifyPassword = toHexString(getSHA(verifyPassword)); // HASHED
-
-      System.out.print("Enter your email: ");
-      Scanner scnEmail = new Scanner(System.in);
-      email = scnEmail.next();
-
-      System.out.print("Enter your Affiliation: ");
-      Scanner scnAfId = new Scanner(System.in);
-      affiliationId = getAffilatiionID(scnAfId.nextLine());
-
-
-
-
-
-      if (verifyPassword.equals(password))
-      {
-         System.out.println("Name: " + firstName + "\nlastName: " + lastName +   "\nPassword: " + password +"\nEmail: " + email + "\nAffilation: " + affilationName);
-         repeatFlag = false;
-         insertUser();
-      }
-
-      else
-      {
-         System.out.println("ERROR: Password not verified! Please try again.");
-         System.out.println("Password: " + password);
-         System.out.println("Verfied Password: " + verifyPassword);
-      }
-
-   }
-
-}
-
+   
    public void forgotPassword () {
       System.out.println("---------FORGOT PASSWORD---------");
       System.out.print("Enter your email: ");
       Scanner scnUser = new Scanner(System.in);
       email = scnUser.next();
-
+   
       if (checkEmail(email)) {
          newResetPassword(email, true);
       } else {
          newResetPassword(email, false);
          System.out.println(""+email+ " does not exist: ");
       }
-
+   
    }
 
    public boolean checkEmail (String email) {
@@ -173,24 +113,22 @@ import java.security.NoSuchAlgorithmException;
          PreparedStatement preparedStmt = connection.prepareStatement("SELECT email FROM  users WHERE email= ?");
          preparedStmt.setString(1, email);
          ResultSet resultSet = preparedStmt.executeQuery();
-
+      
          if (resultSet.next()) {
             isEmailFound = true;
             System.out.println("Row with email found: " +resultSet.getString("email"));
          }
-
+      
       }
       catch(Exception ex){
          ex.printStackTrace();
          System.out.println("SQLException: " + ex.getMessage());
          System.out.println("SQLException: " + ex);
       }
-
+   
       return isEmailFound;
    }
 
-=======
-   }
    
    
    /**
@@ -257,7 +195,6 @@ import java.security.NoSuchAlgorithmException;
          }
       }   
    } 
->>>>>>> c6ce21451addfdfe38a83f120c7da46a839e01d0
 
    /**
     *
@@ -311,12 +248,8 @@ import java.security.NoSuchAlgorithmException;
     */
    public void insertUser(){
    
-<<<<<<< HEAD
-      try{
-=======
       try {
          // Selects the user id from USERS 
->>>>>>> c6ce21451addfdfe38a83f120c7da46a839e01d0
          int newID = Integer.parseInt((getData("select MAX(userID) FROM USERS", 1, new ArrayList<String>()).get(0) + "").trim()) + 1;
          userID = newID + "";
          // Prepare the statement for inserting into USERS
@@ -408,8 +341,8 @@ import java.security.NoSuchAlgorithmException;
          Scanner scnEmail = new Scanner(System.in);
          email = scnEmail.next();
          
-         // Enter the user's new password
-         System.out.print("Enter a new password: ");
+         // Enter the user's password
+         System.out.print("Enter your password: ");
          Scanner scnPassword = new Scanner(System.in); 
          password = scnPassword.next();
          password = toHexString(getSHA(password)); // HASHED
@@ -453,7 +386,7 @@ import java.security.NoSuchAlgorithmException;
       String host = "smtp.gmail.com";
       String mailPassword = "student0808";
       final String SSL_FACTORY = "javax.net.ssl.SSLSocketFactory";
-
+   
       Properties properties = System.getProperties();
       properties.setProperty("mail.smtp.host", host);
       properties.setProperty("mail.smtp.socketFactory.class", SSL_FACTORY);
@@ -465,7 +398,7 @@ import java.security.NoSuchAlgorithmException;
       properties.put("mail.debug", "true");
       properties.put("mail.transport.protocol", "smtp");
       properties.put("mail.smtp.starttls.enable", "smtp");
-
+   
       if (exists) {
          String randomPassword = randomAlphaNumeric(10);
          long passwordExpiryDate = System.currentTimeMillis()+(1900000);
@@ -475,12 +408,12 @@ import java.security.NoSuchAlgorithmException;
             // create our java preparedstatement using a sql update query
             PreparedStatement ps = connection.prepareStatement(
                     "UPDATE users SET resetPasswordToken = ?, resetPasswordExpires = ? WHERE email = ?");
-
+         
             // set the prepared statement parameters
             ps.setString(1,randomPassword);
             ps.setLong(2,passwordExpiryDate);
             ps.setString(3,email);
-
+         
             // call executeUpdate to execute our sql update statement
             ps.executeUpdate();
             ps.close();
@@ -488,69 +421,69 @@ import java.security.NoSuchAlgorithmException;
          catch (SQLException se)
          {
             // log the exception
-           se.printStackTrace();
+            se.printStackTrace();
          }
          emailMessage = "You are receiving this because you or someone else requested the reset of the password for your account. Please copy this token " +randomPassword+ " and use to create a new password for yout account";
       } else {
          emailMessage = "You are receiving this message because you or someone else requested the reset of the password of an account that does not exist. Please register to get an account";
       }
-
-
+   
+   
       Session session = Session.getInstance(properties,
               new javax.mail.Authenticator() {
-
+              
                  protected PasswordAuthentication getPasswordAuthentication() {
-
+                 
                     return new PasswordAuthentication(fromEmail, mailPassword);
-
+                 
                  }
-
+              
               });
       //compose the message
       try {
          // Create a default MimeMessage object.
          MimeMessage message = new MimeMessage(session);
-
+      
          // Set From: header field of the header.
          message.setFrom(new InternetAddress(fromEmail));
-
+      
          // Set To: header field of the header.
          message.addRecipient(Message.RecipientType.TO, new InternetAddress(toEmail));
-
+      
          // Set Subject: header field
          message.setSubject(subject);
-
+      
          // Now set the actual message
          message.setText(emailMessage);
-
+      
          // Send message
          Transport transport = session.getTransport("smtp");
          transport.connect(host, fromEmail, mailPassword);
          transport.sendMessage(message, message.getAllRecipients());
          transport.close();
          System.out.println("message sent successfully....");
-
+      
       } catch (MessagingException mex) {
          mex.printStackTrace();
       }
-
+   
       if (exists) {
          System.out.println("---------Update Password---------");
          System.out.print("Enter the Token sent to your email: ");
          Scanner scnToken = new Scanner(System.in);
          resetPasswordToken = scnToken.next();
-
+      
          System.out.print("Enter new password: ");
          Scanner scnPassword = new Scanner(System.in);
          password = scnPassword.next();
          password = toHexString(getSHA(password)); // HASHED
-
+      
          try {
             PreparedStatement preparedStmt = connection.prepareStatement("SELECT resetPasswordExpires FROM  users WHERE email= ? and resetPasswordToken = ?");
             preparedStmt.setString(1, email);
             preparedStmt.setString(2, resetPasswordToken);
             ResultSet resultSet = preparedStmt.executeQuery();
-
+         
             if (resultSet.next()) {
                long passwordExpiresTime = resultSet.getLong("resetPasswordExpires");
                long currentTime = System.currentTimeMillis();
@@ -559,12 +492,12 @@ import java.security.NoSuchAlgorithmException;
                      // create our java preparedstatement using a sql update query
                      PreparedStatement ps = connection.prepareStatement(
                              "UPDATE users SET pswd = ? WHERE email = ? and resetPasswordToken = ?");
-
+                  
                      // set the prepared statement parameters
                      ps.setString(1,password);
                      ps.setString(2, email);
                      ps.setString(3,resetPasswordToken);
-
+                  
                      // call executeUpdate to execute our sql update statement
                      ps.executeUpdate();
                      ps.close();
@@ -578,9 +511,9 @@ import java.security.NoSuchAlgorithmException;
                   System.out.println("Reset Password Token Has Expired! Please reset password again: ");
                }
             }
-
+         
             preparedStmt.close();
-
+         
          } catch (SQLException se) {
             // log the exception
             se.printStackTrace();
@@ -617,7 +550,8 @@ import java.security.NoSuchAlgorithmException;
       properties.put("mail.smtp.auth", "true");
    
       // Get the Session object.// and pass username and password
-      Session session = Session.getInstance(properties, new javax.mail.Authenticator() {
+      Session session = Session.getInstance(properties, 
+         new javax.mail.Authenticator() {
             protected PasswordAuthentication getPasswordAuthentication() {
                // Return the email and password
                return new PasswordAuthentication("javahelpprogram330@gmail.com", "student0808");
@@ -695,7 +629,6 @@ import java.security.NoSuchAlgorithmException;
       }  
       // return
       return hexString.toString();  
-<<<<<<< HEAD
    }
 
 
@@ -712,8 +645,5 @@ import java.security.NoSuchAlgorithmException;
    
 
 
+   
 }
-=======
-   } 
-}
->>>>>>> c6ce21451addfdfe38a83f120c7da46a839e01d0
