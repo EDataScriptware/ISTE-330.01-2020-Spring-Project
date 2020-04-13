@@ -38,6 +38,7 @@ public class User
    String isAdmin;// '1' for yes / '0' value for no
    String affiliationId;
    String affilationName;
+   String resetPasswordToken;
 
    public User(Connection conn)
    {
@@ -51,63 +52,101 @@ public class User
       canReview = null; // '1' for yes / NULL value for no
       dateOfExpiration = null;
       affiliationId = null; // '1' for yes / '0' value for no
-   
+      resetPasswordToken = null;
    }
    
    public void register()
+{
+   boolean repeatFlag = true;
+
+   while (repeatFlag == true)
    {
-      boolean repeatFlag = true;
-   
-      while (repeatFlag == true)
+      System.out.println("---------REGISTER---------");
+      System.out.print("Enter your first name: ");
+      Scanner scnUser = new Scanner(System.in);
+      firstName = scnUser.next();
+
+      System.out.print("Enter your last name: ");
+      Scanner scnNamel = new Scanner(System.in);
+      lastName = scnNamel.next();
+
+      System.out.print("Enter a new password: ");
+      Scanner scnPassword = new Scanner(System.in);
+      password = scnPassword.next();
+      password = toHexString(getSHA(password)); // HASHED
+
+      System.out.print("Verify your new password: ");
+      Scanner scnVerifyPassword = new Scanner(System.in); // Note: Hash the password at a later time.
+      verifyPassword = scnVerifyPassword.next();
+      verifyPassword = toHexString(getSHA(verifyPassword)); // HASHED
+
+      System.out.print("Enter your email: ");
+      Scanner scnEmail = new Scanner(System.in);
+      email = scnEmail.next();
+
+      System.out.print("Enter your Affiliation: ");
+      Scanner scnAfId = new Scanner(System.in);
+      affiliationId = getAffilatiionID(scnAfId.nextLine());
+
+
+
+
+
+      if (verifyPassword.equals(password))
       {
-         System.out.println("---------REGISTER---------");
-         System.out.print("Enter your first name: ");
-         Scanner scnUser = new Scanner(System.in);
-         firstName = scnUser.next();
-       
-         System.out.print("Enter your last name: ");
-         Scanner scnNamel = new Scanner(System.in);
-         lastName = scnNamel.next();
-      
-         System.out.print("Enter a new password: ");
-         Scanner scnPassword = new Scanner(System.in); 
-         password = scnPassword.next();
-         password = toHexString(getSHA(password)); // HASHED
-         
-         System.out.print("Verify your new password: ");
-         Scanner scnVerifyPassword = new Scanner(System.in); // Note: Hash the password at a later time. 
-         verifyPassword = scnVerifyPassword.next();
-         verifyPassword = toHexString(getSHA(verifyPassword)); // HASHED
-      
-         System.out.print("Enter your email: ");
-         Scanner scnEmail = new Scanner(System.in);
-         email = scnEmail.next();
-      
-         System.out.print("Enter your Affiliation: ");
-         Scanner scnAfId = new Scanner(System.in);
-         affiliationId = getAffilatiionID(scnAfId.nextLine());
-      
-      
-      
-      
-       
-         if (verifyPassword.equals(password))
-         {
-            System.out.println("Name: " + firstName + "\nlastName: " + lastName +   "\nPassword: " + password +"\nEmail: " + email + "\nAffilation: " + affilationName); 
-            repeatFlag = false;
-            insertUser();
-         }
-         
-         else 
-         {
-            System.out.println("ERROR: Password not verified! Please try again.");
-            System.out.println("Password: " + password);
-            System.out.println("Verfied Password: " + verifyPassword);
-         }
-      
+         System.out.println("Name: " + firstName + "\nlastName: " + lastName +   "\nPassword: " + password +"\nEmail: " + email + "\nAffilation: " + affilationName);
+         repeatFlag = false;
+         insertUser();
       }
-       
-   } 
+
+      else
+      {
+         System.out.println("ERROR: Password not verified! Please try again.");
+         System.out.println("Password: " + password);
+         System.out.println("Verfied Password: " + verifyPassword);
+      }
+
+   }
+
+}
+
+   public void forgotPassword () {
+      System.out.println("---------FORGOT PASSWORD---------");
+      System.out.print("Enter your email: ");
+      Scanner scnUser = new Scanner(System.in);
+      email = scnUser.next();
+
+      if (checkEmail(email)) {
+         newResetPassword(email, true);
+      } else {
+         newResetPassword(email, false);
+         System.out.println(""+email+ " does not exist: ");
+      }
+
+   }
+
+   public boolean checkEmail (String email) {
+      boolean isEmailFound = false;
+      try{
+         PreparedStatement preparedStmt = connection.prepareStatement("SELECT email FROM  users WHERE email= ?");
+         preparedStmt.setString(1, email);
+         ResultSet resultSet = preparedStmt.executeQuery();
+
+         if (resultSet.next()) {
+            isEmailFound = true;
+            System.out.println("Row with email found: " +resultSet.getString("email"));
+         }
+
+      }
+      catch(Exception ex){
+         ex.printStackTrace();
+         System.out.println("SQLException: " + ex.getMessage());
+         System.out.println("SQLException: " + ex);
+      }
+
+      return isEmailFound;
+   }
+
 
    public String getAffilatiionID(String Affilation){
       String idTemp = 0 + "";
@@ -138,8 +177,6 @@ public class User
    public void insertUser(){
    
       try{
-      
-      
          int newID = Integer.parseInt((getData("select MAX(userID) FROM USERS", 1, new ArrayList<String>()).get(0) + "").trim()) + 1;
          userID = newID + "";
          PreparedStatement preparedStmt = connection.prepareStatement("INSERT INTO USERS (userID , firstName, lastName, pswd, email, affiliationId) VALUES (" + userID + " ,'" + firstName + "','" + lastName + "','" + password +"','" + email +"','" + affiliationId + "');");
@@ -216,7 +253,151 @@ public class User
       }
       System.out.println("Name: " + firstName + "\nlastName: " + lastName +   "\nPassword: " + password +"\nEmail: " + email + "\nAffilation: " + affiliationId); 
       resetPassword();
-   } 
+   }
+
+   public void newResetPassword(String email, boolean exists) {
+      String emailMessage;
+      String subject = "Password Reset";
+      String toEmail = email;
+      String fromEmail = "javahelpprogram330@gmail.com";
+      String host = "smtp.gmail.com";
+      String mailPassword = "student0808";
+      final String SSL_FACTORY = "javax.net.ssl.SSLSocketFactory";
+
+      Properties properties = System.getProperties();
+      properties.setProperty("mail.smtp.host", host);
+      properties.setProperty("mail.smtp.socketFactory.class", SSL_FACTORY);
+      properties.setProperty("mail.smtp.socketFactory.fallback", "false");
+      properties.setProperty("mail.smtp.port", "465");
+      properties.setProperty("mail.smtp.socketFactory.port", "465");
+      properties.put("mail.smtp.auth", "true");
+      properties.put("mail.smtp.ssl.enable", "true");
+      properties.put("mail.debug", "true");
+      properties.put("mail.transport.protocol", "smtp");
+      properties.put("mail.smtp.starttls.enable", "smtp");
+
+      if (exists) {
+         String randomPassword = randomAlphaNumeric(10);
+         long passwordExpiryDate = System.currentTimeMillis()+(1900000);
+         System.out.println("time" +passwordExpiryDate);
+         try
+         {
+            // create our java preparedstatement using a sql update query
+            PreparedStatement ps = connection.prepareStatement(
+                    "UPDATE users SET resetPasswordToken = ?, resetPasswordExpires = ? WHERE email = ?");
+
+            // set the prepared statement parameters
+            ps.setString(1,randomPassword);
+            ps.setLong(2,passwordExpiryDate);
+            ps.setString(3,email);
+
+            // call executeUpdate to execute our sql update statement
+            ps.executeUpdate();
+            ps.close();
+         }
+         catch (SQLException se)
+         {
+            // log the exception
+           se.printStackTrace();
+         }
+         emailMessage = "You are receiving this because you or someone else requested the reset of the password for your account. Please copy this token " +randomPassword+ " and use to create a new password for yout account";
+      } else {
+         emailMessage = "You are receiving this message because you or someone else requested the reset of the password of an account that does not exist. Please register to get an account";
+      }
+
+
+      Session session = Session.getInstance(properties,
+              new javax.mail.Authenticator() {
+
+                 protected PasswordAuthentication getPasswordAuthentication() {
+
+                    return new PasswordAuthentication(fromEmail, mailPassword);
+
+                 }
+
+              });
+      //compose the message
+      try {
+         // Create a default MimeMessage object.
+         MimeMessage message = new MimeMessage(session);
+
+         // Set From: header field of the header.
+         message.setFrom(new InternetAddress(fromEmail));
+
+         // Set To: header field of the header.
+         message.addRecipient(Message.RecipientType.TO, new InternetAddress(toEmail));
+
+         // Set Subject: header field
+         message.setSubject(subject);
+
+         // Now set the actual message
+         message.setText(emailMessage);
+
+         // Send message
+         Transport transport = session.getTransport("smtp");
+         transport.connect(host, fromEmail, mailPassword);
+         transport.sendMessage(message, message.getAllRecipients());
+         transport.close();
+         System.out.println("message sent successfully....");
+
+      } catch (MessagingException mex) {
+         mex.printStackTrace();
+      }
+
+      if (exists) {
+         System.out.println("---------Update Password---------");
+         System.out.print("Enter the Token sent to your email: ");
+         Scanner scnToken = new Scanner(System.in);
+         resetPasswordToken = scnToken.next();
+
+         System.out.print("Enter new password: ");
+         Scanner scnPassword = new Scanner(System.in);
+         password = scnPassword.next();
+         password = toHexString(getSHA(password)); // HASHED
+
+         try {
+            PreparedStatement preparedStmt = connection.prepareStatement("SELECT resetPasswordExpires FROM  users WHERE email= ? and resetPasswordToken = ?");
+            preparedStmt.setString(1, email);
+            preparedStmt.setString(2, resetPasswordToken);
+            ResultSet resultSet = preparedStmt.executeQuery();
+
+            if (resultSet.next()) {
+               long passwordExpiresTime = resultSet.getLong("resetPasswordExpires");
+               long currentTime = System.currentTimeMillis();
+               if (passwordExpiresTime > currentTime) {
+                  try {
+                     // create our java preparedstatement using a sql update query
+                     PreparedStatement ps = connection.prepareStatement(
+                             "UPDATE users SET pswd = ? WHERE email = ? and resetPasswordToken = ?");
+
+                     // set the prepared statement parameters
+                     ps.setString(1,password);
+                     ps.setString(2, email);
+                     ps.setString(3,resetPasswordToken);
+
+                     // call executeUpdate to execute our sql update statement
+                     ps.executeUpdate();
+                     ps.close();
+                     System.out.println("New Password Created, Please use new password to login");
+                  } catch (SQLException se) {
+                     // log the exception
+                     se.printStackTrace();
+                     System.out.println("update error: " +se);
+                  }
+               } else {
+                  System.out.println("Reset Password Token Has Expired! Please reset password again: ");
+               }
+            }
+
+            preparedStmt.close();
+
+         } catch (SQLException se) {
+            // log the exception
+            se.printStackTrace();
+         }
+      }
+   }
+
 
 
    public void resetPassword(){
@@ -305,7 +486,18 @@ public class User
       }  
    
       return hexString.toString();  
-   } 
+   }
+
+
+   private static final String ALPHA_NUMERIC_STRING = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+   public static String randomAlphaNumeric(int count) {
+      StringBuilder builder = new StringBuilder();
+      while (count-- != 0) {
+         int character = (int)(Math.random()*ALPHA_NUMERIC_STRING.length());
+         builder.append(ALPHA_NUMERIC_STRING.charAt(character));
+      }
+      return builder.toString();
+   }
    
    
 

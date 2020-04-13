@@ -52,3 +52,243 @@ java.sql.SQLException: Access denied for user 'root'@'localhost' (using password
 	at java.sql/java.sql.DriverManager.getConnection(DriverManager.java:251)
 	at MySQLDatabase.connect(MySQLDatabase.java:71)
 	at main.main(main.java:46)
+Reason: Unknown - please refer to Cause below.
+Cause: java.lang.ClassNotFoundException: com.mysql.jdbc.Driver
+
+java.lang.ClassNotFoundException: com.mysql.jdbc.Driver
+	at java.base/jdk.internal.loader.BuiltinClassLoader.loadClass(BuiltinClassLoader.java:583)
+	at java.base/jdk.internal.loader.ClassLoaders$AppClassLoader.loadClass(ClassLoaders.java:178)
+	at java.base/java.lang.ClassLoader.loadClass(ClassLoader.java:521)
+	at java.base/java.lang.Class.forName0(Native Method)
+	at java.base/java.lang.Class.forName(Class.java:332)
+	at MySQLDatabase.connect(MySQLDatabase.java:70)
+	at main.main(main.java:18)
+Reason: Unknown - please refer to Cause below.
+Cause: java.lang.ClassNotFoundException: com.mysql.jdbc.Driver
+
+java.lang.ClassNotFoundException: com.mysql.jdbc.Driver
+	at java.base/jdk.internal.loader.BuiltinClassLoader.loadClass(BuiltinClassLoader.java:583)
+	at java.base/jdk.internal.loader.ClassLoaders$AppClassLoader.loadClass(ClassLoaders.java:178)
+	at java.base/java.lang.ClassLoader.loadClass(ClassLoader.java:521)
+	at java.base/java.lang.Class.forName0(Native Method)
+	at java.base/java.lang.Class.forName(Class.java:332)
+	at MySQLDatabase.connect(MySQLDatabase.java:70)
+	at main.main(main.java:46)
+Reason: Unknown - please refer to Cause below.
+Cause: java.lang.ClassNotFoundException: com.mysql.jdbc.Driver
+
+java.lang.ClassNotFoundException: com.mysql.jdbc.Driver
+	at java.base/jdk.internal.loader.BuiltinClassLoader.loadClass(BuiltinClassLoader.java:583)
+	at java.base/jdk.internal.loader.ClassLoaders$AppClassLoader.loadClass(ClassLoaders.java:178)
+	at java.base/java.lang.ClassLoader.loadClass(ClassLoader.java:521)
+	at java.base/java.lang.Class.forName0(Native Method)
+	at java.base/java.lang.Class.forName(Class.java:332)
+	at MySQLDatabase.connect(MySQLDatabase.java:70)
+	at main.main(main.java:18)
+Reason: Unknown - please refer to Cause below.
+Cause: java.lang.ClassNotFoundException: com.mysql.jdbc.Driver
+
+java.lang.ClassNotFoundException: com.mysql.jdbc.Driver
+	at java.base/jdk.internal.loader.BuiltinClassLoader.loadClass(BuiltinClassLoader.java:583)
+	at java.base/jdk.internal.loader.ClassLoaders$AppClassLoader.loadClass(ClassLoaders.java:178)
+	at java.base/java.lang.ClassLoader.loadClass(ClassLoader.java:521)
+	at java.base/java.lang.Class.forName0(Native Method)
+	at java.base/java.lang.Class.forName(Class.java:332)
+	at MySQLDatabase.connect(MySQLDatabase.java:70)
+	at main.main(main.java:46)
+Reason: Unknown - please refer to Cause below.
+Cause: java.lang.ClassNotFoundException: com.mysql.jdbc.Driver
+
+java.lang.ClassNotFoundException: com.mysql.jdbc.Driver
+	at java.base/jdk.internal.loader.BuiltinClassLoader.loadClass(BuiltinClassLoader.java:583)
+	at java.base/jdk.internal.loader.ClassLoaders$AppClassLoader.loadClass(ClassLoaders.java:178)
+	at java.base/java.lang.ClassLoader.loadClass(ClassLoader.java:521)
+	at java.base/java.lang.Class.forName0(Native Method)
+	at java.base/java.lang.Class.forName(Class.java:332)
+	at MySQLDatabase.connect(MySQLDatabase.java:70)
+	at main.main(main.java:18)
+Reason: Unknown - please refer to Cause below.
+Cause: java.lang.ClassNotFoundException: com.mysql.jdbc.Driver
+
+java.lang.ClassNotFoundException: com.mysql.jdbc.Driver
+	at java.base/jdk.internal.loader.BuiltinClassLoader.loadClass(BuiltinClassLoader.java:583)
+	at java.base/jdk.internal.loader.ClassLoaders$AppClassLoader.loadClass(ClassLoaders.java:178)
+	at java.base/java.lang.ClassLoader.loadClass(ClassLoader.java:521)
+	at java.base/java.lang.Class.forName0(Native Method)
+	at java.base/java.lang.Class.forName(Class.java:332)
+	at MySQLDatabase.connect(MySQLDatabase.java:70)
+	at main.main(main.java:46)
+Reason: Unknown - please refer to Cause below.
+Cause: java.lang.ClassNotFoundException: com.mysql.jdbc.Driver
+
+java.lang.ClassNotFoundException: com.mysql.jdbc.Driver
+	at java.base/jdk.internal.loader.BuiltinClassLoader.loadClass(BuiltinClassLoader.java:583)
+	at java.base/jdk.internal.loader.ClassLoaders$AppClassLoader.loadClass(ClassLoaders.java:178)
+	at java.base/java.lang.ClassLoader.loadClass(ClassLoader.java:521)
+	at java.base/java.lang.Class.forName0(Native Method)
+	at java.base/java.lang.Class.forName(Class.java:332)
+	at MySQLDatabase.connect(MySQLDatabase.java:70)
+	at main.main(main.java:18)
+Reason: Unknown - please refer to Cause below.
+Cause: java.lang.ClassNotFoundException: com.mysql.jdbc.Driver
+
+java.lang.ClassNotFoundException: com.mysql.jdbc.Driver
+	at java.base/jdk.internal.loader.BuiltinClassLoader.loadClass(BuiltinClassLoader.java:583)
+	at java.base/jdk.internal.loader.ClassLoaders$AppClassLoader.loadClass(ClassLoaders.java:178)
+	at java.base/java.lang.ClassLoader.loadClass(ClassLoader.java:521)
+	at java.base/java.lang.Class.forName0(Native Method)
+	at java.base/java.lang.Class.forName(Class.java:332)
+	at MySQLDatabase.connect(MySQLDatabase.java:70)
+	at main.main(main.java:46)
+Reason: Unknown - please refer to Cause below.
+Cause: java.lang.ClassNotFoundException: com.mysql.jdbc.Driver
+
+java.lang.ClassNotFoundException: com.mysql.jdbc.Driver
+	at java.base/jdk.internal.loader.BuiltinClassLoader.loadClass(BuiltinClassLoader.java:583)
+	at java.base/jdk.internal.loader.ClassLoaders$AppClassLoader.loadClass(ClassLoaders.java:178)
+	at java.base/java.lang.ClassLoader.loadClass(ClassLoader.java:521)
+	at java.base/java.lang.Class.forName0(Native Method)
+	at java.base/java.lang.Class.forName(Class.java:332)
+	at MySQLDatabase.connect(MySQLDatabase.java:70)
+	at main.main(main.java:18)
+Reason: Unknown - please refer to Cause below.
+Cause: java.lang.ClassNotFoundException: com.mysql.jdbc.Driver
+
+java.lang.ClassNotFoundException: com.mysql.jdbc.Driver
+	at java.base/jdk.internal.loader.BuiltinClassLoader.loadClass(BuiltinClassLoader.java:583)
+	at java.base/jdk.internal.loader.ClassLoaders$AppClassLoader.loadClass(ClassLoaders.java:178)
+	at java.base/java.lang.ClassLoader.loadClass(ClassLoader.java:521)
+	at java.base/java.lang.Class.forName0(Native Method)
+	at java.base/java.lang.Class.forName(Class.java:332)
+	at MySQLDatabase.connect(MySQLDatabase.java:70)
+	at main.main(main.java:46)
+Reason: Unknown - please refer to Cause below.
+Cause: java.lang.ClassNotFoundException: com.mysql.jdbc.Driver
+
+java.lang.ClassNotFoundException: com.mysql.jdbc.Driver
+	at java.base/jdk.internal.loader.BuiltinClassLoader.loadClass(BuiltinClassLoader.java:583)
+	at java.base/jdk.internal.loader.ClassLoaders$AppClassLoader.loadClass(ClassLoaders.java:178)
+	at java.base/java.lang.ClassLoader.loadClass(ClassLoader.java:521)
+	at java.base/java.lang.Class.forName0(Native Method)
+	at java.base/java.lang.Class.forName(Class.java:332)
+	at MySQLDatabase.connect(MySQLDatabase.java:70)
+	at main.main(main.java:18)
+Reason: Unknown - please refer to Cause below.
+Cause: java.lang.ClassNotFoundException: com.mysql.jdbc.Driver
+
+java.lang.ClassNotFoundException: com.mysql.jdbc.Driver
+	at java.base/jdk.internal.loader.BuiltinClassLoader.loadClass(BuiltinClassLoader.java:583)
+	at java.base/jdk.internal.loader.ClassLoaders$AppClassLoader.loadClass(ClassLoaders.java:178)
+	at java.base/java.lang.ClassLoader.loadClass(ClassLoader.java:521)
+	at java.base/java.lang.Class.forName0(Native Method)
+	at java.base/java.lang.Class.forName(Class.java:332)
+	at MySQLDatabase.connect(MySQLDatabase.java:70)
+	at main.main(main.java:46)
+Reason: com.mysql.cj.exceptions.InvalidConnectionAttributeException: The server time zone value 'WAT' is unrecognized or represents more than one time zone. You must configure either the server or JDBC driver (via the 'serverTimezone' configuration property) to use a more specifc time zone value if you want to utilize time zone support.
+Cause: java.sql.SQLException: The server time zone value 'WAT' is unrecognized or represents more than one time zone. You must configure either the server or JDBC driver (via the 'serverTimezone' configuration property) to use a more specifc time zone value if you want to utilize time zone support.
+
+Reason: com.mysql.cj.exceptions.InvalidConnectionAttributeException: The server time zone value 'WAT' is unrecognized or represents more than one time zone. You must configure either the server or JDBC driver (via the 'serverTimezone' configuration property) to use a more specifc time zone value if you want to utilize time zone support.
+Cause: java.sql.SQLException: The server time zone value 'WAT' is unrecognized or represents more than one time zone. You must configure either the server or JDBC driver (via the 'serverTimezone' configuration property) to use a more specifc time zone value if you want to utilize time zone support.
+
+Reason: com.mysql.cj.exceptions.InvalidConnectionAttributeException: The server time zone value 'WAT' is unrecognized or represents more than one time zone. You must configure either the server or JDBC driver (via the 'serverTimezone' configuration property) to use a more specifc time zone value if you want to utilize time zone support.
+Cause: java.sql.SQLException: The server time zone value 'WAT' is unrecognized or represents more than one time zone. You must configure either the server or JDBC driver (via the 'serverTimezone' configuration property) to use a more specifc time zone value if you want to utilize time zone support.
+
+Reason: com.mysql.cj.exceptions.InvalidConnectionAttributeException: The server time zone value 'WAT' is unrecognized or represents more than one time zone. You must configure either the server or JDBC driver (via the 'serverTimezone' configuration property) to use a more specifc time zone value if you want to utilize time zone support.
+Cause: java.sql.SQLException: The server time zone value 'WAT' is unrecognized or represents more than one time zone. You must configure either the server or JDBC driver (via the 'serverTimezone' configuration property) to use a more specifc time zone value if you want to utilize time zone support.
+
+Reason: Unknown - please refer to Cause below.
+Cause: null
+
+java.lang.NullPointerException
+	at java.base/java.lang.String.<init>(String.java:260)
+	at java.base/java.lang.String.valueOf(String.java:3056)
+	at User.<init>(User.java:53)
+	at main.main(main.java:20)
+Reason: Unknown - please refer to Cause below.
+Cause: null
+
+java.lang.NullPointerException
+	at java.base/java.lang.String.<init>(String.java:260)
+	at java.base/java.lang.String.valueOf(String.java:3056)
+	at User.<init>(User.java:53)
+	at main.main(main.java:20)
+Reason: Unknown - please refer to Cause below.
+Cause: null
+
+java.lang.NumberFormatException: null
+	at java.base/java.lang.Long.parseLong(Long.java:662)
+	at java.base/java.lang.Long.parseLong(Long.java:824)
+	at User.<init>(User.java:57)
+	at main.main(main.java:20)
+Reason: Unknown - please refer to Cause below.
+Cause: null
+
+java.lang.NumberFormatException: null
+	at java.base/java.lang.Long.parseLong(Long.java:662)
+	at java.base/java.lang.Long.parseLong(Long.java:824)
+	at User.<init>(User.java:57)
+	at main.main(main.java:20)
+Reason: Unknown - please refer to Cause below.
+Cause: null
+
+java.lang.NumberFormatException: null
+	at java.base/java.lang.Long.parseLong(Long.java:662)
+	at java.base/java.lang.Long.parseLong(Long.java:824)
+	at User.<init>(User.java:57)
+	at main.main(main.java:20)
+Reason: Unknown - please refer to Cause below.
+Cause: null
+
+java.lang.NumberFormatException: null
+	at java.base/java.lang.Long.parseLong(Long.java:662)
+	at java.base/java.lang.Long.parseLong(Long.java:824)
+	at User.<init>(User.java:57)
+	at main.main(main.java:20)
+Reason: Unknown - please refer to Cause below.
+Cause: null
+
+java.lang.NumberFormatException: null
+	at java.base/java.lang.Long.parseLong(Long.java:662)
+	at java.base/java.lang.Long.parseLong(Long.java:824)
+	at User.<init>(User.java:57)
+	at main.main(main.java:20)
+Reason: Unknown - please refer to Cause below.
+Cause: null
+
+java.lang.NumberFormatException: null
+	at java.base/java.lang.Long.parseLong(Long.java:662)
+	at java.base/java.lang.Long.parseLong(Long.java:824)
+	at User.<init>(User.java:57)
+	at main.main(main.java:20)
+Reason: Unknown - please refer to Cause below.
+Cause: null
+
+java.lang.NumberFormatException: null
+	at java.base/java.lang.Long.parseLong(Long.java:662)
+	at java.base/java.lang.Long.parseLong(Long.java:824)
+	at User.<init>(User.java:57)
+	at main.main(main.java:20)
+Reason: Unknown - please refer to Cause below.
+Cause: null
+
+java.lang.NumberFormatException: null
+	at java.base/java.lang.Long.parseLong(Long.java:662)
+	at java.base/java.lang.Long.parseLong(Long.java:824)
+	at User.<init>(User.java:57)
+	at main.main(main.java:20)
+Reason: Unknown - please refer to Cause below.
+Cause: null
+
+java.lang.NumberFormatException: null
+	at java.base/java.lang.Long.parseLong(Long.java:662)
+	at java.base/java.lang.Long.parseLong(Long.java:824)
+	at User.<init>(User.java:57)
+	at main.main(main.java:20)
+Reason: Unknown - please refer to Cause below.
+Cause: null
+
+java.lang.NumberFormatException: null
+	at java.base/java.lang.Long.parseLong(Long.java:662)
+	at java.base/java.lang.Long.parseLong(Long.java:824)
+	at User.<init>(User.java:57)
+	at main.main(main.java:20)

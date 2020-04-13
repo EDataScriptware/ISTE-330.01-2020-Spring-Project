@@ -19,9 +19,9 @@ public class MySQLDatabase {
    private Connection connection; //Database Connection Object
    private boolean inTrans; //whether or not we are currently in a transaction
 
-   private String driver = "com.mysql.jdbc.Driver";
+   private String driver = "com.mysql.cj.jdbc.Driver";
    private String username = "root";
-   private String password = "l0t5W@R5"; //need to be changed to your password
+   private String password = "Bella1422"; //need to be changed to your password
    private String dbServer = "localhost";
    private String dbName = "CSM";
 
@@ -64,12 +64,14 @@ public class MySQLDatabase {
                       + dbServer + ":3306"
                       + "/" + dbName
                       + "?user=" + username
-                      + "&password=" + password;
+                      + "&password=" + password
+                      + "&serverTimezone=UTC";
 
       try {
          Class.forName(driver);
          connection = DriverManager.getConnection(connectionURI);
       } catch(Exception e) {
+         System.out.println(e);
          throw new DLException(e, e.toString());
       }
 

@@ -19,7 +19,7 @@ public class main
          Papers papers = new Papers();
          User user = new User(msd.getConnection());
       
-         System.out.println("[R]egister or [L]ogin?");
+         System.out.println("[R]egister or [L]ogin? or [F]orgot Password");
          Scanner scnLoginOrRegister = new Scanner(System.in);
          choice = scnLoginOrRegister.next().charAt(0);
          System.out.println(choice);
@@ -31,6 +31,10 @@ public class main
          else if (choice == 'L')
          {
             user.login();
+         }
+         else if (choice == 'F')
+         {
+            user.forgotPassword();
          }
          else 
          {

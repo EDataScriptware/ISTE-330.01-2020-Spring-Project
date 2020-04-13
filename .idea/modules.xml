@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/ISTE-330.01-2020-Spring-Project 2.iml" filepath="$PROJECT_DIR$/ISTE-330.01-2020-Spring-Project 2.iml" />
+      <module fileurl="file://$PROJECT_DIR$/lib/jaf-1.1.1/jaf-1.1.1.iml" filepath="$PROJECT_DIR$/lib/jaf-1.1.1/jaf-1.1.1.iml" />
+      <module fileurl="file://$PROJECT_DIR$/lib/javamail-1.4.7/javamail-1.4.7.iml" filepath="$PROJECT_DIR$/lib/javamail-1.4.7/javamail-1.4.7.iml" />
+    </modules>
+  </component>
+</project>
