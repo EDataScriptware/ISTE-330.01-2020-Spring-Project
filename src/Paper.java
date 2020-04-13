@@ -2,16 +2,20 @@ import java.sql.Array;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
+ 
 /**
- * Row Abstraction Data Access Object for a Paper
- *
- * @author Liam Bewley
- * @version 2020.04.09
- */
+*
+* The Paper program is used to manage the SQL statement from the database
+* 
+* @author  Liam Bewley, Edward Riley, Trent Jacobson, Matthew Oelbaum, and Sayed Mobin 
+* @version 1.0
+* @since   2020-04-09 
+*
+*/
 
 public class Paper {
 
-    //attributes
+    // To set up the attributes
     private int paperID;
     private String title;
     private String paperAbstract;
@@ -21,21 +25,17 @@ public class Paper {
     private int submitterID;
     private String fileID;
     private String tentativeStatus;
-    private ArrayList<String> authors; //change to ArrayList<User> once User created?
+    private ArrayList<String> authors; // Change to ArrayList<User> once User created
     private ArrayList<String> subjects;
 
-    //constructors
-    public Paper() {
-
-    }
+    // Constructors
+    public Paper() {}
 
     public Paper(int paperID) {
         this.paperID  = paperID;
     }
 
-    //getters and setters
-
-
+    // Getters and Setters
     public int getPaperID() {
         return paperID;
     }
@@ -124,6 +124,15 @@ public class Paper {
         this.subjects = subjects;
     }
 
+    /**
+    * 
+    * Connect() method is used to instantiates the database
+    * and connect to it
+    * 
+    * @param are not used
+    * @throw DLException is to find any errors
+    * 
+    */
     private MySQLDatabase connect() throws DLException {
         MySQLDatabase db = new MySQLDatabase();
         db.connect();
@@ -131,22 +140,28 @@ public class Paper {
     }
 
     /**
+     *
      * Update class data to database using paperID
+     *
+     * @throws DLEception is to find any errors
+     *
      */
     public void fetch() throws DLException {
 
         try {
-            //connect
+        
+            // Instantiates this database
             MySQLDatabase db = connect();
 
-            //get data
+            // Set up the array named values and get data
             ArrayList<String> values = new ArrayList<>();
             ArrayList<String> list = db.getData("SELECT * FROM papers WHERE paperID = " + getPaperID()).get(0);
 
             int submissionTypeID;
-
+            
+            // To set data to match 
             if (list.size() > 2) {
-                //set data to match
+
                 setTitle(list.get(1));
                 setAbstract(list.get(2));
                 setTrack(list.get(3));
@@ -156,36 +171,44 @@ public class Paper {
                 setFileID(list.get(7));
                 setTentativeStatus(list.get(8));
 
-            } else {
+            } 
+            // When there is no data return, display the error
+            else {
                 throw new DLException("No data returned");
             }
 
-            //get submission type
+            // Get submission type
             setType(db.getData("SELECT typeName FROM _Types where typeId = " + submissionTypeID).get(0).get(0));
 
-            //get authors
+            // Get authors
             setAuthors(db.getData("SELECT userId FROM PaperAuthors WHERE paperId = " + getPaperID()).get(0));
 
-            //get subjects
+            // Get subjects
             setSubjects(db.getData("SELECT subjectId FROM PaperSubjects WHERE paperId = " + getPaperID()).get(0));
 
+            // Database is closed
             db.close();
-        } catch (Exception e) {
+        } 
+        // To catch any errors and show the message
+        catch (Exception e) {
             throw new DLException(e, "Requested operation failed");
         }
     }
 
     /**
+     *
      * Update database entry for this ID
      *
      * @return Number of records affected
+     * @throws DLException is to find any errors
+     *
      */
     public int put() throws DLException {
 
-        //connect
+        // Instantiates this database and then connect it
         MySQLDatabase db = connect();
 
-        //list values for papers
+        // List values for papers
         ArrayList<String> values = new ArrayList<>();
         values.add(getTitle());
         values.add(getAbstract());
@@ -197,17 +220,19 @@ public class Paper {
         values.add(getTentativeStatus());
         values.add("" + getPaperID());
 
-        //put data for papers
+        // Put data for papers
         int r = db.setData("UPDATE paper SET title = ?, abstract = ?, track = ?, status = ?,"
             + "submissionType = ?, submitterId = ?, fileId = ?, tentativeStatus = ?  WHERE paperID = ?", values);
 
-        //update paperAuthors
+        // Update paperAuthors
 
 
-        //update paperSubjects
+        // Update paperSubjects
 
-
+        // Database is closed
         db.close();
+        
+        // Return
         return r;
 
     }
@@ -219,10 +244,10 @@ public class Paper {
      */
     public int post() throws DLException {
 
-        //connect
+        // Instantiates this database and then connect it
         MySQLDatabase db = connect();
 
-        //list values
+        // List the values 
         ArrayList<String> values = new ArrayList<>();
         values.add("" + getPaperID());
         values.add(getTitle());
@@ -234,36 +259,45 @@ public class Paper {
         values.add("" + getFileID());
         values.add(getTentativeStatus());
 
-        //post data
+        // Post data
         int r = db.setData( "INSERT INTO papers VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)", values);
-
+         
+        // Database is closed 
         db.close();
+        
+        // Return
         return r;
     }
 
     /**
+     * 
      * Delete this equipment object from DB
      *
      * @return Number of records affected
+     * @throws DLException is to find any errors
      */
     public int delete() throws DLException {
 
-        //connect
+        // Instantiates this database and then connect it
         MySQLDatabase db = connect();
 
-        //list for setData
+        // List for setData
         ArrayList<String> values = new ArrayList<>();
         values.add("" + getPaperID());
 
-        //delete
+        // Delete 
         int r = db.setData("DELETE FROM papers WHERE paperId = ?", values);
 
+        // Close the database
         db.close();
+        
+        // Return
         return r;
 
     }
 
     /**
+     *
      * Get all info (except filename) for specified paper
      *
      * @param paperID id for paper to get info on
@@ -279,16 +313,17 @@ public class Paper {
      *     private String tentativeStatus;
      *     private ArrayList<Integer> authors; //change to ArrayList<User> once User created?
      *     private ArrayList<String> subjects;
+     * @throws DLException is to find any errors
      */
     public ArrayList<String> getPaper(int paperID) throws DLException {
 
-        //paper by ID
+        // Paper by ID
         Paper paper = new Paper(paperID);
         paper.fetch();
 
         ArrayList<String> paperInfo = new ArrayList<String>();
 
-        //add basic attributes
+        // Add basic attributes
         paperInfo.add("" + getPaperID());
         paperInfo.add(getTitle());
         paperInfo.add(getAbstract());
@@ -298,20 +333,21 @@ public class Paper {
         paperInfo.add("" + getSubmitterID());
         paperInfo.add(getTentativeStatus());
 
-        //add authors
+        // Add authors
         String authors = "";
         for(String author: getAuthors()) {
             authors += "" + author + ", ";
         }
         paperInfo.add(authors);
 
-        //add subjects
+        // Add subjects
         String subjects = "";
         for(String subject: getSubjects()) {
             subjects += subject + ", ";
         }
         paperInfo.add(subjects);
 
+        // return
         return paperInfo;
 
     }
@@ -327,8 +363,10 @@ public class Paper {
      * @param coauthorFirstNames First names of coauthors
      * @param coauthorLastNames Last names of coauthors
      * @return
-     * @throws DLException
+     * @throws DLException is to find any errors
+     *
      */
+     
     public boolean setPaper(int paperID,
                             String submissionTitle,
                             String submissionAbstract,
@@ -337,26 +375,28 @@ public class Paper {
                             String[] subjects,
                             String[] coauthorFirstNames,
                             String[] coauthorLastNames) throws DLException {
-
+                            
+        // return false
         boolean successful = false;
 
+            // Instantiates this database and connect it
             MySQLDatabase db = connect();
 
-            //simple attributes
+            // Set up the simple attributes
             setPaperID(paperID);
             setTitle(submissionTitle);
             setAbstract(submissionAbstract);
             setType(db.getData("SELECT typeId FROM _Types WHERE typeName = " + getType()).get(0).get(0));
             setFileID(filename);
 
-            //subjects
+            // Set the subjects
             ArrayList<String> subjectsList = new ArrayList<String>();
             for(int i = 0; i < subjects.length; i++) {
                 subjectsList.add(subjects[i]);
             }
             setSubjects(subjectsList);
 
-            //authors
+            //Set the authors
             ArrayList<String> authorIDs = new ArrayList<String>();
             for(int i = 0; i < coauthorFirstNames.length; i++) {
                 authorIDs.add(db.getData("SELECT userId FROM users WHERE firstName = "
@@ -369,13 +409,14 @@ public class Paper {
             } else {
                 successful = put() > 0;
             }
-
+        // return successfully
         return successful;
 
     }
 
     @Override
     public String toString() {
+        // Prints the result
         return "Paper{" +
                 "paperID=" + paperID +
                 ", title='" + title + '\'' +
@@ -391,3 +432,4 @@ public class Paper {
                 '}';
     }
 }
+

@@ -3,18 +3,23 @@ import javax.sql.*;
 import java.util.*;
 import java.io.*;
 
+ 
 /**
- *  MySQL Database Connections
- *
- *  @author Liam Bewley
- *  @version 2020.04.09
- */
+* The MySQLDatabase program is used to connect or close the database
+* and receive the data from the database by using methods.
+*
+* @author  Liam Bewley, Edward Riley, Trent Jacobson, Matthew Oelbaum, and Sayed Mobin 
+* @version 1.0
+* @since   2020-04-09 
+*/
+
 public class MySQLDatabase {
 
-   //constant
+   // Two attributes are created but they are constant
    private static String EXCEPTIONMESSAGE = "Failure to perform operation";
    private static String SQLEXCEPTIONMESSAGE = "SQL Engine Failure";
 
+<<<<<<< HEAD
    // attributes
    private Connection connection; //Database Connection Object
    private boolean inTrans; //whether or not we are currently in a transaction
@@ -24,24 +29,51 @@ public class MySQLDatabase {
    private String password = "Bella1422"; //need to be changed to your password
    private String dbServer = "localhost";
    private String dbName = "CSM";
+=======
+   // All attributes are created
+   private Connection connection; // Database Connection Object
+   private boolean inTrans; // Whether or not we are currently in a transaction
+>>>>>>> c6ce21451addfdfe38a83f120c7da46a839e01d0
 
-   public MySQLDatabase() {
+   public String driver = "com.mysql.jdbc.Driver";
+   public String username = "root";
+   public String password = "students"; // Needs to be changed to your password 
+   public String dbServer = "localhost";
+   public String dbName = "CSM";
 
-   }
+   public MySQLDatabase() {}
 
+  /**
+    * 
+    * @para username is the user's username
+    * @para password is the user's password
+    * @para dbServer is a database's server
+    * @para dbName is a database's name
+    *
+    * @see #username
+    * @see #password
+    * @see #dbServer
+    * @see #dbName
+    *
+    */
+    
    public MySQLDatabase(String username, String password, String dbServer, String dbName) {
       this.username = username;
       this.password = password;
       this.dbServer = dbServer;
       this.dbName = dbName;
-
+   
       inTrans = false;
    }
 
    /**
     *
+    * Para are not used
+    *
     * @return Connection
+    *
     */
+    
    public Connection getConnection() {
       return this.connection;
    }
@@ -50,13 +82,17 @@ public class MySQLDatabase {
     * Open connection to database
     *
     * @return boolean If connection was successful or not
+    * @throws DLException to find any error
+    *
     */
+    
    public boolean connect() throws DLException {
-
+   
       //if in transaction, CAN NOT connect
       if ( inTrans ) {
          return false;
       }
+<<<<<<< HEAD
 
       //jdbc:mysql://<server>/<database>?user=<user>&password=<password>"
       String connectionURI =
@@ -67,299 +103,430 @@ public class MySQLDatabase {
                       + "&password=" + password
                       + "&serverTimezone=UTC";
 
+=======
+   
+      // jdbc:mysql://<server>/<database>?user=<user>&password=<password>"
+      String connectionURI = "jdbc:mysql://" 
+                                + dbServer + ":3306" 
+                                + "/" + dbName + "?autoReconnect=true&useSSL=false" 
+                                + "&user=" + username 
+                                + "&password=" + password;
+   
+>>>>>>> c6ce21451addfdfe38a83f120c7da46a839e01d0
       try {
+         // To set the driver
          Class.forName(driver);
+         // To get it connected
          connection = DriverManager.getConnection(connectionURI);
+<<<<<<< HEAD
       } catch(Exception e) {
          System.out.println(e);
+=======
+      } 
+      // To catch the error and show message
+      catch(Exception e) {
+>>>>>>> c6ce21451addfdfe38a83f120c7da46a839e01d0
          throw new DLException(e, e.toString());
       }
-
-      return true; // connection successful
+      // Show that connection is successful 
+      return true; 
    }
 
    /**
+    * 
     * Close database connection
     *
     * @return boolean If connection was closed successfully
+    * @throws DLException is to find any errors
+    *
     */
    public boolean close() throws DLException {
-
+   
       //if in transaction, CAN NOT close
       if ( inTrans ) {
          return false;
       }
-
+   
       try {
+         // The connection is closed
          connection.close();
-      } catch (Exception e) {
+      } 
+      // To catch the error and show message
+      catch (Exception e) {
          throw new DLException(e, e.toString());
       }
-      return true; //closed successfully
-   }
+      // Shows that connection is closed successfully
+      return true; 
+      }
+   
+   
+   
+   /**
+   *
+   *
+   * Database Connection Status
+   * @throws DLException is to find any errors
+   *
+   */
+   public static boolean main() throws DLException {
+      
+      // Instantiates this database
+      MySQLDatabase MySQL = new MySQLDatabase(); 
+      
+      // Opens both databases below but prints some information about drivers and others.
+      System.out.println( "\n");
+      System.out.println("MySQLDatabase Connection: " + MySQL.connect() + " \nDriver Loaded: " + MySQL.driver + "\nConnecting to the database: " + MySQL.dbName);  
+      System.out.println( "\n");
+      
+      // return false
+      return false;
+   } 
+   
 
    /**
+    *
     * Perform a SELECT operation on the database
     *
     * @param query SQL string containing a query
     * @return ArrayList<ArrayList<String>> 2D ArrayList containing the query results
+    * @throws DLException is to find any errors
+    *
     */
    public ArrayList<ArrayList<String>> getData(String query) throws DLException {
-
+   
+      // To set up the array named result
       ArrayList<ArrayList<String>> result = new ArrayList<ArrayList<String>>();
+      // To set up the ResultSet named rs
       ResultSet rs;
-
-
+   
+   
       try {
+         // To set up the statement with connection for query
          Statement statement = connection.createStatement();
          rs = statement.executeQuery(query);
          ResultSetMetaData rsmd = rs.getMetaData();
          int numCols = rsmd.getColumnCount();
-
-         //while there are more rows, add row to result
+      
+         // While there are more rows, add row to result
          while(rs.next()) {
             ArrayList<String> row = new ArrayList<String>();
-
-            //process row
+         
+            // Process row
             for(int i = 1; i <= numCols; i++) {
                String res = rs.getString(i);
                row.add(res);
             }
-
+            // Added row to the result
             result.add(row);
          }
-
-      } catch (Exception e) {
+      
+      } 
+      // To catch the error and show message
+      catch (Exception e) {
          throw new DLException(e, EXCEPTIONMESSAGE);
       }
-
+      // return
       return result;
-
+   
    }
 
    /**
+    *
     * Perform a SELECT operation on the database
     *
     * @param query SQL string containing a query
     * @param includeHeader Whether or not to include metadata
     * @return ArrayList<ArrayList<String>> 2D ArrayList containing the query results
+    * @throws DLException is to find any errors
+    *
     */
    public ArrayList<ArrayList<String>> getData(String query, boolean includeHeader) throws DLException{
       //use default method for no header
       if ( !includeHeader ) {
          return getData(query);
       }
-
+      
+      // Set up the array named result
       ArrayList<ArrayList<String>> result = new ArrayList<ArrayList<String>>();
+      // To set up the ResultSet named rs
       ResultSet rs;
-
+   
       try {
+         // Set up the statement with connection 
          Statement statement = connection.createStatement();
          rs = statement.executeQuery(query);
          ResultSetMetaData rsmd = rs.getMetaData();
          int numCols = rsmd.getColumnCount();
-
-         //first row is field names
+      
+         // First row is field names
          ArrayList<String> names = new ArrayList<String>();
          for(int i = 1; i <= numCols; i++) {
             names.add(rsmd.getColumnLabel(i));
          }
+         // Added names to the result
          result.add(names);
-
-         //second row is field widths
+      
+         // Second row is field widths
          ArrayList<String> widths = new ArrayList<String>();
          for(int i = 1; i <= numCols; i++) {
             widths.add(Integer.toString(rsmd.getPrecision(i)));
          }
+         // Added widths to the result
          result.add(widths);
-
-         //while there are more rows, add row to result
+      
+         // While there are more rows, add row to result
          while(rs.next()) {
             ArrayList<String> row = new ArrayList<String>();
-
-            //process row
+         
+            // Process row
             for(int i = 1; i <= numCols; i++) {
                String res = rs.getString(i);
                row.add(res);
             }
-
+            // Added row to the result
             result.add(row);
          }
-
-      } catch (Exception e) {
+      
+      } 
+      // To catch the error and show message
+      catch (Exception e) {
          throw new DLException(e, EXCEPTIONMESSAGE);
       }
-
+      // return
       return result;
-
+   
    }
 
    /**
+    *
     * Perform a SELECT operation on the database using a prepared statement
     *
     * @param query SQL string containing a query
     * @param vals List of values to query with
     * @return ArrayList<ArrayList<String>> 2D ArrayList containing the query results
+    * @throws DLException to find any errors
+    *
     */
    public ArrayList<ArrayList<String>> getData(String query, List<String> vals) throws DLException {
-
+   
+      // To set the attributes and array
       ArrayList<ArrayList<String>> result = new ArrayList<ArrayList<String>>();
       ResultSet rs;
       ResultSetMetaData rsmd;
       int numCols;
-
+   
       try {
-         //prepare statement
+         //To set up the prepare statement and insert query to it
          PreparedStatement statement = prepare(query);
-
-         //insert each string value
+      
+         // Insert each string value
          for (int i = 0; i < vals.size(); i++) {
             statement.setString(i+1, vals.get(i));
          }
-
-         //perform query
+      
+         // Perform query
          rs = statement.executeQuery();
          rsmd = rs.getMetaData();
          numCols = rsmd.getColumnCount();
-
-         //add results to ArrayList
+      
+         // Add results to ArrayList
          while (rs.next()) {
             ArrayList<String> row = new ArrayList<String>();
-
-            //process row
+         
+            // Process row
             for (int i = 1; i <= numCols; i++) {
                row.add(rs.getString(i));
             }
-
+            // Added row to the result
             result.add(row);
          }
-
-      } catch (SQLException sqle) {
+      
+      } 
+      // To catch the error and show message
+      catch (SQLException sqle) {
          throw new DLException(sqle, SQLEXCEPTIONMESSAGE);
-      } catch (Exception e) {
+      } 
+      // To catch the error and show message
+      catch (Exception e) {
          throw new DLException(e, EXCEPTIONMESSAGE);
       }
-
+      // return
       return result;
    }
 
    /**
     *
+    * To set the data for updatedString 
+    *
     * @param updateString SQL String with the DB operation to be performed
     * @return Number of rows of data affected
+    * @throws DLException is to find any errors
+    *
     */
    public int setData(String updateString) throws DLException {
-
+   
       int numAffected = -1;
-
+   
       try {
+         // Set up the statement with connection
          Statement statement = connection.createStatement();
+         
+         // statement is executed with updatedString and put it in numAffected
          numAffected = statement.executeUpdate(updateString);
-      } catch (Exception e) {
+      } 
+      // To catch the error and show message
+      catch (Exception e) {
          throw new DLException(e, EXCEPTIONMESSAGE);
       }
-
+      // return
       return numAffected;
-
+   
    }
 
    /**
+    *
+    * To set the data when updated 
     *
     * @param updateString SQL String with the DB operation to be performed
     * @return Number of rows of data affected
+    * @throws DLException is to find any errors
+    *
     */
    public int setData(String updateString, List<String> vals) throws DLException {
-
+   
+      // return the execute statement with updated SQLString and vals (list)
       return executeStatement(updateString, vals);
-
-   }
-
-   /**
-    * @param SQLString SQL String to turn into a prepared statement
-    * @return PreparedStatement of passed SQL String
-    */
-   private PreparedStatement prepare(String SQLString) throws DLException {
-
-      try {
-         return connection.prepareStatement(SQLString);
-      } catch (SQLException sqle) {
-         throw new DLException(sqle, EXCEPTIONMESSAGE);
-      }
-
+   
    }
 
    /**
     *
+    * To prepare the statement for SQLString
+    *
+    * @param SQLString SQL String to turn into a prepared statement
+    * @return PreparedStatement of passed SQL String
+    * @throws DLException to find any errors
+    *
     */
-   private int executeStatement(String SQLString, List<String> vals) throws DLException {
-      int numAffected = -1;
-
+   private PreparedStatement prepare(String SQLString) throws DLException {
+   
       try {
-         PreparedStatement statement = prepare(SQLString);
+         // return the connection with SQLString (Prepare Statement)
+         return connection.prepareStatement(SQLString);
+      } 
+      // To catch the error and show message
+      catch (SQLException sqle) {
+         throw new DLException(sqle, EXCEPTIONMESSAGE);
+      }
+   
+   }
 
-         //insert each string value
+    /**
+    * 
+    * To execute the statement with prepared in a for statement loop
+    *
+    * @param SQLString is a statement
+    * @para vals is to list the data
+    * @throws DLException to find any errors
+    * 
+    */
+    
+   private int executeStatement(String SQLString, List<String> vals) throws DLException {
+     
+      // Set attribute 
+      int numAffected = -1;
+   
+      try {
+         // Set up the Prepared Statement for SQLString
+         PreparedStatement statement = prepare(SQLString);
+      
+         // Insert each string value
          for(int i = 0; i < vals.size(); i++) {
             statement.setString(i+1, vals.get(i));
          }
-
+      
+         // To get it updated
          numAffected = statement.executeUpdate();
-
-      } catch (SQLException sqle) {
+      
+      } 
+      // To catch the error and show message
+      catch (SQLException sqle) {
          throw new DLException(sqle, SQLEXCEPTIONMESSAGE);
-      }catch (Exception e) {
+      }
+      // To catch the error and show message
+      catch (Exception e) {
          throw new DLException(e, EXCEPTIONMESSAGE);
       }
-
+      // return 
       return numAffected;
    }
 
    /**
+    *
     * Start a transaction
+    * @throws DLException to find any errors
+    *
     */
    public void startTrans() throws DLException {
+      
+      // set it to be true
       inTrans = true;
-
+   
       try {
-
+         // The connection is set to false when commits
          connection.setAutoCommit(false);
-
-      } catch (SQLException sqle) {
+      
+      } 
+      // To catch the error and show message
+      catch (SQLException sqle) {
          throw new DLException(sqle, SQLEXCEPTIONMESSAGE);
       }
    }
 
    /**
+    *
     * End a transaction by committing
+    * @throws DLException to find any errors
+    *
     */
    public void endTrans() throws DLException {
-
+   
       try {
+         // The connection is commited
          connection.commit();
+         // The connection is set to true when commits
          connection.setAutoCommit(true);
-      } catch (SQLException sqle) {
+      } 
+      
+      // To catch the error and show message
+      catch (SQLException sqle) {
          throw new DLException(sqle, SQLEXCEPTIONMESSAGE);
       }
-
+      // Returns false
       inTrans = false;
    }
 
    /**
+    *
     * End a transaction by rolling back
+    * @throws DLException to find any errors
+    *
     */
    public void rollbackTrans() throws DLException {
-
+   
       try {
+         // connection is rollback
          connection.rollback();
+         // connection is set to true when commited 
          connection.setAutoCommit(true);
-      } catch (SQLException sqle) {
+      } 
+      // To catch the error and show message
+      catch (SQLException sqle) {
          throw new DLException(sqle, SQLEXCEPTIONMESSAGE);
       }
-
+      // Returns false
       inTrans = false;
-
    }
-
-
 }
    
    
