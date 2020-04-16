@@ -4,14 +4,14 @@ import java.util.ArrayList;
 
  
 /**
-*
-* The Paper program is used to manage the SQL statement from the database
-* 
-* @author  Liam Bewley, Edward Riley, Trent Jacobson, Matthew Oelbaum, and Sayed Mobin 
-* @version 1.0
-* @since   2020-04-09 
-*
-*/
+ *
+ * The Paper program is used to manage the SQL statement from the database
+ *
+ * @author  Liam Bewley, Edward Riley, Trent Jacobson, Matthew Oelbaum, and Sayed Mobin
+ * @version 1.0.1
+ * @since   2020-04-16
+ *
+ */
 
 public class Paper {
 
@@ -25,14 +25,25 @@ public class Paper {
     private int submitterID;
     private String fileID;
     private String tentativeStatus;
-    private ArrayList<String> authors; // Change to ArrayList<User> once User created
+    private ArrayList<User> authors;
     private ArrayList<String> subjects;
+
+    private User loggedInUser;
 
     // Constructors
     public Paper() {}
 
     public Paper(int paperID) {
         this.paperID  = paperID;
+    }
+
+    public Paper(User loggedInUser) {
+        this.loggedInUser = loggedInUser;
+    }
+
+    public Paper(int paperID, User loggedInUser) {
+        this.paperID = paperID;
+        this.loggedInUser = loggedInUser;
     }
 
     // Getters and Setters
@@ -108,12 +119,42 @@ public class Paper {
         this.tentativeStatus = tentativeStatus;
     }
 
-    public ArrayList<String> getAuthors() {
+    public ArrayList<User> getAuthors() {
         return authors;
     }
 
-    public void setAuthors(ArrayList<String> authors) {
+    public void setAuthors(ArrayList<User> authors) {
         this.authors = authors;
+    }
+
+    public void setLoggedInUser(User loggedInUser) {
+        this.loggedInUser = loggedInUser;
+    }
+
+    /**
+     * Get a particular author
+     *
+     * @param authorID userID of a paper author
+     * @return User object of passed author
+     * @throws DLException Thrown when authorID is not an author of this paper
+     */
+    public User getAuthor(int authorID) throws DLException {
+        for(User user: authors) {
+            if (Integer.parseInt(user.getUserID()) == authorID) {
+                return user;
+            }
+        }
+
+        //if the user doesn't exist, throw an exception
+        throw new DLException("");
+    }
+
+    /**
+     * Add a new author
+     * @param author New author to be added
+     */
+    public void addAuthor(User author) {
+        this.authors.add(author);
     }
 
     public ArrayList<String> getSubjects() {
@@ -125,14 +166,13 @@ public class Paper {
     }
 
     /**
-    * 
-    * Connect() method is used to instantiates the database
-    * and connect to it
-    * 
-    * @param are not used
-    * @throw DLException is to find any errors
-    * 
-    */
+     *
+     * Connect() method is used to instantiates the database
+     * and connect to it
+     *
+     * @throw DLException is to find any errors
+     *
+     */
     private MySQLDatabase connect() throws DLException {
         MySQLDatabase db = new MySQLDatabase();
         db.connect();
@@ -143,7 +183,7 @@ public class Paper {
      *
      * Update class data to database using paperID
      *
-     * @throws DLEception is to find any errors
+     * @throws DLException is to find any errors
      *
      */
     public void fetch() throws DLException {
@@ -181,7 +221,13 @@ public class Paper {
             setType(db.getData("SELECT typeName FROM _Types where typeId = " + submissionTypeID).get(0).get(0));
 
             // Get authors
-            setAuthors(db.getData("SELECT userId FROM PaperAuthors WHERE paperId = " + getPaperID()).get(0));
+            ArrayList<User> newAuthors = new ArrayList<User>();
+            for(String id: db.getData("SELECT userId FROM PaperAuthors WHERE paperId = " + getPaperID()).get(0)) {
+                User author = new User(id);
+                author.fetch();
+                newAuthors.add(author);
+            }
+            setAuthors(newAuthors);
 
             // Get subjects
             setSubjects(db.getData("SELECT subjectId FROM PaperSubjects WHERE paperId = " + getPaperID()).get(0));
@@ -204,6 +250,14 @@ public class Paper {
      *
      */
     public int put() throws DLException {
+
+        //if not admin AND not author
+        if(Integer.parseInt(loggedInUser.getIsAdmin()) == 0 && !loggedInUserIsAuthor()) {
+
+            //access denied
+            return -1;
+
+        }
 
         // Instantiates this database and then connect it
         MySQLDatabase db = connect();
@@ -244,6 +298,14 @@ public class Paper {
      */
     public int post() throws DLException {
 
+        //if not admin AND not author
+        if(Integer.parseInt(loggedInUser.getIsAdmin()) == 0 && !loggedInUserIsAuthor()) {
+
+            //access denied
+            return -1;
+
+        }
+
         // Instantiates this database and then connect it
         MySQLDatabase db = connect();
 
@@ -277,6 +339,14 @@ public class Paper {
      * @throws DLException is to find any errors
      */
     public int delete() throws DLException {
+
+        //only admin may delete
+        if(Integer.parseInt(loggedInUser.getIsAdmin()) == 0) {
+
+            //access denied
+            return -1;
+
+        }
 
         // Instantiates this database and then connect it
         MySQLDatabase db = connect();
@@ -317,6 +387,14 @@ public class Paper {
      */
     public ArrayList<String> getPaper(int paperID) throws DLException {
 
+        //if not admin AND not author
+        if(Integer.parseInt(loggedInUser.getIsAdmin()) == 0 && !loggedInUserIsAuthor()) {
+
+            //access denied, return empty list
+            return new ArrayList<String>();
+
+        }
+
         // Paper by ID
         Paper paper = new Paper(paperID);
         paper.fetch();
@@ -335,8 +413,8 @@ public class Paper {
 
         // Add authors
         String authors = "";
-        for(String author: getAuthors()) {
-            authors += "" + author + ", ";
+        for(User author: getAuthors()) {
+            authors += author.getFirstName() + author.getLastName() + ", ";
         }
         paperInfo.add(authors);
 
@@ -375,7 +453,15 @@ public class Paper {
                             String[] subjects,
                             String[] coauthorFirstNames,
                             String[] coauthorLastNames) throws DLException {
-                            
+
+        //if not admin AND not author
+        if(Integer.parseInt(loggedInUser.getIsAdmin()) == 0 && !loggedInUserIsAuthor()) {
+
+            //access denied
+            return false;
+
+        }
+
         // return false
         boolean successful = false;
 
@@ -397,10 +483,13 @@ public class Paper {
             setSubjects(subjectsList);
 
             //Set the authors
-            ArrayList<String> authorIDs = new ArrayList<String>();
+            ArrayList<User> authorIDs = new ArrayList<User>();
             for(int i = 0; i < coauthorFirstNames.length; i++) {
-                authorIDs.add(db.getData("SELECT userId FROM users WHERE firstName = "
+                User author = new User(db.getData("SELECT userId FROM users WHERE firstName = "
                         + coauthorFirstNames[i] + " AND lastName = " + coauthorLastNames[i]).get(0).get(0));
+                author.setFirstName(coauthorFirstNames[i]);
+                author.setLastName(coauthorLastNames[i]);
+                authorIDs.add(author);
             }
             setAuthors(authorIDs);
 
@@ -427,9 +516,37 @@ public class Paper {
                 ", submitterID=" + submitterID +
                 ", fileID='" + fileID + '\'' +
                 ", tentativeStatus='" + tentativeStatus + '\'' +
-                ", authors=" + authors +
+                ", authors=" + authorsToString() +
                 ", subjects=" + subjects +
                 '}';
+    }
+
+    /**
+     *
+     * @return List of authors
+     */
+    private String authorsToString() {
+        String authorString = "";
+        for(User user: authors) {
+            authorString += user.getFirstName() + user.getLastName() + ", ";
+        }
+        return authorString;
+    }
+
+    /**
+     * Whether logged in user is author or not
+     *
+     * @return If user is author
+     */
+    private boolean loggedInUserIsAuthor() {
+
+        for(User author: authors) {
+            if (author.getUserID().equals(loggedInUser.getUserID())) {
+                return true;
+            }
+        }
+
+        return false;
     }
 }
 

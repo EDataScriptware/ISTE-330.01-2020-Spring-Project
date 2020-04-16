@@ -25,7 +25,7 @@ public class MySQLDatabase {
    private boolean inTrans; // Whether or not we are currently in a transaction
    public String driver = "com.mysql.jdbc.Driver";
    public String username = "root";
-   public String password = "students"; // Needs to be changed to your password 
+   public String password = "students"; // Needs to be changed to your password
    public String dbServer = "localhost";
    public String dbName = "CSM";
 

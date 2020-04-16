@@ -56,7 +56,112 @@ public class User {
    String affilationName;
    String resetPasswordToken;
 
-   public User(Connection conn)
+   //getters and setters
+      public Connection getConnection() {
+         return connection;
+      }
+
+      public void setConnection(Connection connection) {
+         this.connection = connection;
+      }
+
+      public String getUserID() {
+         return userID;
+      }
+
+      public void setUserID(String userID) {
+         this.userID = userID;
+      }
+
+      public String getLastName() {
+         return lastName;
+      }
+
+      public void setLastName(String lastName) {
+         this.lastName = lastName;
+      }
+
+      public String getFirstName() {
+         return firstName;
+      }
+
+      public void setFirstName(String firstName) {
+         this.firstName = firstName;
+      }
+
+      public String getEmail() {
+         return email;
+      }
+
+      public void setEmail(String email) {
+         this.email = email;
+      }
+
+      public String getPassword() {
+         return password;
+      }
+
+      public void setPassword(String password) {
+         this.password = password;
+      }
+
+      public String getVerifyPassword() {
+         return verifyPassword;
+      }
+
+      public void setVerifyPassword(String verifyPassword) {
+         this.verifyPassword = verifyPassword;
+      }
+
+      public String getCanReview() {
+         return canReview;
+      }
+
+      public void setCanReview(String canReview) {
+         this.canReview = canReview;
+      }
+
+      public Date getDateOfExpiration() {
+         return dateOfExpiration;
+      }
+
+      public void setDateOfExpiration(Date dateOfExpiration) {
+         this.dateOfExpiration = dateOfExpiration;
+      }
+
+      public String getIsAdmin() {
+         return isAdmin;
+      }
+
+      public void setIsAdmin(String isAdmin) {
+         this.isAdmin = isAdmin;
+      }
+
+      public String getAffiliationId() {
+         return affiliationId;
+      }
+
+      public void setAffiliationId(String affiliationId) {
+         this.affiliationId = affiliationId;
+      }
+
+      public String getAffilationName() {
+         return affilationName;
+      }
+
+      public void setAffilationName(String affilationName) {
+         this.affilationName = affilationName;
+      }
+
+      public String getResetPasswordToken() {
+         return resetPasswordToken;
+      }
+
+      public void setResetPasswordToken(String resetPasswordToken) {
+         this.resetPasswordToken = resetPasswordToken;
+      }
+
+      public User(Connection conn)
    {
    
    
@@ -90,7 +195,110 @@ public class User {
       affiliationId = null; // '1' for yes / '0' value for no
       resetPasswordToken = null;
    }
-   
+
+      /**
+       *
+       * @param userID Id for this user object
+       */
+   public User(String userID) {
+         this.userID = userID;
+   }
+
+      /**
+       *
+       * Update class data to database using userID
+       *
+       * @throws DLException is to find any errors
+       *
+       */
+      public void fetch(User loggedInUser) throws DLException {
+
+         //check credentials
+         if(Integer.parseInt(loggedInUser.getIsAdmin()) == 0) {
+
+            //NOT admin, check if this is them
+            if(!getUserID().equals(loggedInUser.getUserID())) {
+               //access denied
+
+               return;
+            }
+
+         }
+
+         try {
+
+            // Instantiates this database
+            MySQLDatabase db = new MySQLDatabase();
+            db.connect();
+
+            // Set up the array named values and get data
+            ArrayList<String> values = new ArrayList<>();
+            ArrayList<String> list = db.getData("SELECT * FROM users WHERE userID = " + getUserID()).get(0);
+
+            // To set data to match
+            if (list.size() > 2) {
+
+               setLastName(list.get(1));
+               setFirstName(list.get(2));
+               setEmail(list.get(3));
+
+               setDateOfExpiration(new Date(list.get(5)));
+               setIsAdmin(list.get(6));
+               setAffiliationId(list.get(7));
+               setAffilationName(db.getData("SELECT affiliationName FROM _affiliations WHERE affiliationId = " + getAffiliationId()).get(0).get(0));
+
+            }
+            // When there is no data return, display the error
+            else {
+               throw new DLException("No data returned");
+            }
+
+            // Database is closed
+            db.close();
+         }
+         // To catch any errors and show the message
+         catch (Exception e) {
+            throw new DLException(e, "Requested operation failed");
+         }
+   }
+
+      /**
+       * Non logged in fetch, only able to get names
+       *
+       * @throws DLException is to find any errors
+       */
+   public void fetch() throws DLException {
+      try {
+
+         // Instantiates this database
+         MySQLDatabase db = new MySQLDatabase();
+         db.connect();
+
+         // Set up the array named values and get data
+         ArrayList<String> values = new ArrayList<>();
+         ArrayList<String> list = db.getData("SELECT * FROM users WHERE userID = " + getUserID()).get(0);
+
+         // To set data to match
+         if (list.size() > 2) {
+
+            setLastName(list.get(1));
+            setFirstName(list.get(2));
+
+
+         }
+         // When there is no data return, display the error
+         else {
+            throw new DLException("No data returned");
+         }
+
+         // Database is closed
+         db.close();
+      }
+      // To catch any errors and show the message
+      catch (Exception e) {
+         throw new DLException(e, "Requested operation failed");
+      }
+   }
    
    public void forgotPassword () {
       System.out.println("---------FORGOT PASSWORD---------");
@@ -526,7 +734,6 @@ public class User {
     * 
     * This is used to set up the email formats and reset the password
     *
-    * @param are not used
     * 
     */
    public void resetPassword(){
