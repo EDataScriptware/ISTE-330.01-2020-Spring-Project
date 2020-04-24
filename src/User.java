@@ -554,7 +554,6 @@ public class User {
          Scanner scnPassword = new Scanner(System.in); 
          password = scnPassword.next();
          password = toHexString(getSHA(password)); // HASHED
-         
          // Set up the array named tempList
          ArrayList<String> tempList = new ArrayList<String>();
          // Added both email and password to the tempList
