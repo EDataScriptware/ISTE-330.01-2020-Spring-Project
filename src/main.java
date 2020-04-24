@@ -41,7 +41,6 @@ public class main {
          // To get data initialization connected
          msd.connect(); 
          // Connect to the papers java file 
-         Papers papers = new Papers();
          // Connect user java file to the MySQLDatabase
          User user = new User(msd.getConnection());
          
