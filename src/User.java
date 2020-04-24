@@ -779,10 +779,12 @@ public class User {
          message.addRecipient(Message.RecipientType.TO, new InternetAddress(toEmail));
       
          // Set Subject: header field
-         message.setSubject("Hello!!!!!!!!!!!!!!!!!!!");
+         message.setSubject("Your Account Information ");
       
          // Now set the actual message
-         message.setText("Just logged in :D");
+         message.setText("You are logged in now.\n\n Email: " + email + "\n\n If you forgot the password, please follow this instruction below \n\n Instruction:\n\n 1. When program file runs \n\n 2. Type [F] or Forgot Password \n\n 3. You may reset your password with token");
+         
+         
       
          // To add the message and display it
          Transport.send(message);
@@ -847,9 +849,4 @@ public class User {
       }
       return builder.toString();
    }
-   
-   
-
-
-   
 }
