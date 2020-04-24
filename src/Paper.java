@@ -283,6 +283,7 @@ public class Paper {
 
         // Update paperSubjects
 
+
         // Database is closed
         db.close();
         
