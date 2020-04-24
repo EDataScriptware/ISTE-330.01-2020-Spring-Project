@@ -298,3 +298,48 @@ Cause: com.mysql.jdbc.exceptions.jdbc4.MySQLNonTransientConnectionException: Cou
 Reason: java.sql.SQLException: Access denied for user 'root'@'localhost' (using password: YES)
 Cause: com.mysql.jdbc.exceptions.jdbc4.MySQLNonTransientConnectionException: Could not create connection to database server. Attempted reconnect 3 times. Giving up.
 
+Reason: com.mysql.cj.exceptions.CJException: Public Key Retrieval is not allowed
+Cause: java.sql.SQLNonTransientConnectionException: Could not create connection to database server. Attempted reconnect 3 times. Giving up.
+
+Reason: com.mysql.cj.exceptions.CJException: Public Key Retrieval is not allowed
+Cause: java.sql.SQLNonTransientConnectionException: Could not create connection to database server. Attempted reconnect 3 times. Giving up.
+
+Reason: Unknown - please refer to Cause below.
+Cause: null
+
+DLException
+	at MySQLDatabase.connect(MySQLDatabase.java:98)
+	at User.connect(User.java:219)
+	at User.post(User.java:530)
+	at User.setUser(User.java:428)
+	at main.main(main.java:42)
+Reason: com.mysql.cj.exceptions.CJException: Public Key Retrieval is not allowed
+Cause: java.sql.SQLNonTransientConnectionException: Could not create connection to database server. Attempted reconnect 3 times. Giving up.
+
+Reason: com.mysql.cj.exceptions.CJException: Public Key Retrieval is not allowed
+Cause: java.sql.SQLNonTransientConnectionException: Could not create connection to database server. Attempted reconnect 3 times. Giving up.
+
+Reason: Unknown - please refer to Cause below.
+Cause: null
+
+DLException
+	at MySQLDatabase.connect(MySQLDatabase.java:98)
+	at User.connect(User.java:219)
+	at User.post(User.java:530)
+	at User.setUser(User.java:428)
+	at main.main(main.java:42)
+Reason: com.mysql.cj.exceptions.CJException: Public Key Retrieval is not allowed
+Cause: java.sql.SQLNonTransientConnectionException: Could not create connection to database server. Attempted reconnect 3 times. Giving up.
+
+Reason: com.mysql.cj.exceptions.CJException: Public Key Retrieval is not allowed
+Cause: java.sql.SQLNonTransientConnectionException: Could not create connection to database server. Attempted reconnect 3 times. Giving up.
+
+Reason: Unknown - please refer to Cause below.
+Cause: null
+
+DLException
+	at MySQLDatabase.connect(MySQLDatabase.java:98)
+	at User.connect(User.java:219)
+	at User.post(User.java:531)
+	at User.setUser(User.java:429)
+	at main.main(main.java:42)

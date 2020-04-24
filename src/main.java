@@ -28,63 +28,32 @@ public class main {
     
    public static void main(String[] args) throws DLException {  
    
-   
-      // Instantiates this database
-      MySQLDatabase msd = new MySQLDatabase();
-      
-      
-      // Set it to compare that choice is made
-      char choice;
+
+     
       
       try {
          
-         // To get data initialization connected
-         msd.connect(); 
+        
          // Connect to the papers java file 
-         Papers papers = new Papers();
+         Paper papers = new Paper();
          // Connect user java file to the MySQLDatabase
-         User user = new User(msd.getConnection());
-         
-         // Display the message to see if database is able to connect (true or false), what driver is connected, and what database is connected
-         System.out.println("\n");  
-         System.out.println("MySQLDatabase Connection: " + msd.connect() + " \nDriver Loaded: " + msd.driver + "\nConnecting to the database: " + msd.dbName);
-         System.out.println("\n");  
+         User user = new User();
+         User user2 = new User();
+         User user3 = new User("7641"); //Change to any id you want to overied
+       
+      user.setUser("Mark", "Blackz", "jacko1234@gmail.com", "sigma1234", "none"); // if user has an id it will update its info, otherwise it will register a new user
 
+      user2.login("jacko1234@gmail.com", "sigma1234"); //Login with email or password, returns password token
+
+      user.getPapers(700); //returns arraylist of all papers the specfied user authored
       
-         System.out.println("[R]egister or [L]ogin? or [F]orgot Password");
-         // Requests the user to pick one choice (Register or Login) 
-         Scanner scnLoginOrRegister = new Scanner(System.in);
-         choice = scnLoginOrRegister.next().charAt(0);
-         System.out.println(choice);
-         
-         // If R is being selected, it will be processed with next steps
-         if (choice == 'R') {
-            user.register();
-         }
-         
-         // if L is being selected, it will be processed with next steps
-         else if (choice == 'L') {
-            user.login();
-         }
-         else if (choice == 'F')
-         {
-            user.forgotPassword();
-         }
-         else 
-         {
-            System.out.println("Error.");
-            System.exit(0);
-         }
-         
-         // Data initialization is closed
-         msd.close();
+      user3.setUser("Jimbo", "Hobbs", "jimjim343@gmail.com", "cooldude34", "none"); // Updating new info in SetUser
+
       }
       
       // When program is not working, it will display error and then close the connection
       catch (Exception e) {
 
-         msd.connect();
-         msd.close();
 
          throw new DLException(e, e.getMessage());
 
