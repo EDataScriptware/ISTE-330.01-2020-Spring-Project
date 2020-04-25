@@ -1,3 +1,5 @@
+import com.mysql.fabric.xmlrpc.base.Array;
+
 import java.sql.*;
 import javax.sql.*;
 import java.util.*;
@@ -344,8 +346,15 @@ private MySQLDatabase  connect() throws DLException {
          throw new DLException(e, "Requested operation failed");
       }
    }
-   
-   public ArrayList<Object> getPapers(int uID){
+
+       /**
+        * Returns all papers for specified user
+        *
+        * @param uID User ID
+        * @return Papers
+        * @throws DLException if anything goes wrong
+        */
+   public ArrayList<Object> getPapers(int uID) throws DLException{
       ArrayList<String> tempList = new ArrayList<String>();
       // Added both email and password to the tempList
       tempList.add(uID + "");
@@ -364,40 +373,24 @@ private MySQLDatabase  connect() throws DLException {
       return tempList;
    }
 
-
-
-   public void forgotPassword () {
-      System.out.println("---------FORGOT PASSWORD---------");
-      System.out.print("Enter your email: ");
-      Scanner scnUser = new Scanner(System.in);
-      email = scnUser.next();
-   
-      if (checkEmail(email)) {
-         newResetPassword(email, true);
-      } else {
-         newResetPassword(email, false);
-         System.out.println(""+email+ " does not exist: ");
-      }
-   
-   }
-
-   public boolean checkEmail (String email) {
+       /**
+        * Check if email is already in database
+        *
+        * @param email
+        * @return
+        * @throws DLException if anything goes wrong
+        */
+   public boolean checkEmail (String email) throws DLException {
       boolean isEmailFound = false;
       try{
-         db.setData("SELECT email FROM users WHERE email= ?");
-         // preparedStmt.setString(1, email);
-         // ResultSet resultSet = preparedStmt.executeQuery();
-      
-         //if (resultSet.next()) {
-         //   isEmailFound = true;
-         //   System.out.println("Row with email found: " +resultSet.getString("email"));
-         //}
+          ArrayList<String> val = new ArrayList<String>();
+          val.add(email);
+          ArrayList<ArrayList<String>> res = db.getData("SELECT email FROM users WHERE email = ?", val);
+          isEmailFound = res.size() > 0;
       
       }
       catch(Exception ex){
-         ex.printStackTrace();
-         System.out.println("SQLException: " + ex.getMessage());
-         System.out.println("SQLException: " + ex);
+         throw new DLException(ex);
       }
    
       return isEmailFound;
@@ -422,92 +415,14 @@ private MySQLDatabase  connect() throws DLException {
       put();
 
       
-   } 
-   
-   /**
-    * 
-    OUTDATED METHOD - We can remove this
-    *
-    * A While Loop is running while the user is doing with 
-    * the registration of their account
-    *
-    * No parameters are used
-    *
-   
-   public void register() {
-      
-      // Set it to be true
-      boolean repeatFlag = true;
-   
-      // A While Loop
-      while (repeatFlag == true) {
-         System.out.println("---------REGISTER---------");
-         
-         // Enter the user's first name
-         System.out.print("Enter your first name: ");
-         Scanner scnUser = new Scanner(System.in);
-         firstName = scnUser.next();
-       
-         // Enter the user's last name
-         System.out.print("Enter your last name: ");
-         Scanner scnNamel = new Scanner(System.in);
-         lastName = scnNamel.next();
-       
-         // Enter the user's new password
-         System.out.print("Enter a new password: ");
-         Scanner scnPassword = new Scanner(System.in); 
-         password = scnPassword.next();
-         password = toHexString(getSHA(password)); // HASHED
-         
-         // Enter the user's password again to verify
-         System.out.print("Verify your new password: ");
-         Scanner scnVerifyPassword = new Scanner(System.in); // Note: Hash the password at a later time. 
-         verifyPassword = scnVerifyPassword.next();
-         verifyPassword = toHexString(getSHA(verifyPassword)); // HASHED
-      
-         // Enter the user's email
-         System.out.print("Enter your email: ");
-         Scanner scnEmail = new Scanner(System.in);
-         email = scnEmail.next();
-      
-         // Enter the user's affiliation
-         System.out.print("Enter your Affiliation: ");
-         Scanner scnAfId = new Scanner(System.in);
-        
-         affiliationId = convertAffilatiionID(scnAfId.nextLine());
-      
-         // When everything is finished, it will display the summary of the user's information (Name, Password, Email, and Affilication)
-         if (verifyPassword.equals(password)) {
-            System.out.println("Name: " + firstName + "\nlastName: " + lastName +   "\nPassword: " + password +"\nEmail: " + email + "\nAffilation: " + affilationName); 
-            repeatFlag = false;
-            insertUser();
-         }
-         
-         // When password is not right, must enter it again. 
-         else {
-            System.out.println("ERROR: Password not verified! Please try again.");
-            System.out.println("Password: " + password);
-            System.out.println("Verfied Password: " + verifyPassword);
-         }
-      }   
-   }  */
-
-   /**
-    *
-    * This is used to set up the affilation for each user
-    *
-    * @para Affilation is the user's unique ID number
-    *
-    */
-   
-   
+   }
   
    /**
     *
     * To insert the User ID
     *
     * No parameters are used
-    *
+    * @throws DLException if anything goes wrong
     */
     public int post() throws DLException{
       // Instantiates this database and then connect it
@@ -525,7 +440,6 @@ private MySQLDatabase  connect() throws DLException {
    tempList.add(password);
    tempList.add(email);
    tempList.add(affiliationId);
-   System.out.println("adding");
    int r = db.setData(" INSERT INTO USERS (userID , firstName, lastName, pswd, email, affiliationId) VALUES (?,?,?,?,?,?);", tempList);
     // Database is closed
 
@@ -567,10 +481,10 @@ private MySQLDatabase  connect() throws DLException {
     * @param query is a SQL statement
     * @para totalFeilds is to find the total of all fields
     * @para list to find the data list
-    * 
+    * @throws DLException if anything goes wrong
     */
 
-    public ArrayList<Object> getData(String query, int totalFeilds, ArrayList<String> list) {
+    public ArrayList<Object> getData(String query, int totalFeilds, ArrayList<String> list) throws DLException {
       
       // Set up the array named reSet
       ArrayList<Object> reSet = new ArrayList<Object>();
@@ -606,8 +520,7 @@ private MySQLDatabase  connect() throws DLException {
       }
       // To find any error and display the error message
       catch(Exception ex){
-         ex.printStackTrace();
-         System.out.println("error " + ex);
+         throw new DLException(ex);
       }
       
       // Return
@@ -622,9 +535,9 @@ private MySQLDatabase  connect() throws DLException {
     * the login in of their account
     *
     * No parameters are used
-    *
+    * @throws DLException if anything goes wrong
     */
-    public String login(String em, String pass) {
+    public String login(String em, String pass) throws DLException {
  
       // Setting email and password strings
        email = em;   
@@ -648,15 +561,18 @@ private MySQLDatabase  connect() throws DLException {
           canReview = results.get(4) + "";
           isAdmin = results.get(5) + "";     
        }
-       
-   
-    
-    // To display the summary of the user's name, lastname, password, email, and affilation
- // System.out.println("Name: " + firstName + "\nlastName: " + lastName +   "\nPassword: " + password +"\nEmail: " + email + "\nAffilation: " + affiliationId); 
+
  return password;
  }
 
-   public void newResetPassword(String email, boolean exists) {
+       /**
+        * Reset password helper
+        *
+        * @param email
+        * @param exists
+        * @throws DLException
+        */
+   public void newResetPassword(String email, boolean exists) throws DLException {
       String emailMessage;
       String subject = "Password Reset";
       String toEmail = email;
@@ -680,26 +596,16 @@ private MySQLDatabase  connect() throws DLException {
       if (exists) {
          String randomPassword = randomAlphaNumeric(10);
          long passwordExpiryDate = System.currentTimeMillis()+(1900000);
-         System.out.println("time" +passwordExpiryDate);
          try
          {
             // create our java preparedstatement using a sql update query
             db.setData(
-                    "UPDATE users SET resetPasswordToken = ?, resetPasswordExpires = ? WHERE email = ?");
-         
-            // set the prepared statement parameters
-            // ps.setString(1,randomPassword);
-            // ps.setLong(2,passwordExpiryDate);
-            // ps.setString(3,email);
-         
-            // call executeUpdate to execute our sql update statement
-            // ps.executeUpdate();
-            // ps.close();
+                    "UPDATE users SET pswd = ?, expiration = ? WHERE email = ?");
+
          }
-         catch (Exception se) //--------CHANGE TO SQLEXCEPTION LATER MAYBE - EDWARD
+         catch (Exception se)
          {
-            // log the exception
-            se.printStackTrace();
+            throw new DLException(se);
          }
          emailMessage = "You are receiving this because you or someone else requested the reset of the password for your account. Please copy this token " +randomPassword+ " and use to create a new password for yout account";
       } else {
@@ -739,65 +645,11 @@ private MySQLDatabase  connect() throws DLException {
          transport.connect(host, fromEmail, mailPassword);
          transport.sendMessage(message, message.getAllRecipients());
          transport.close();
-         System.out.println("message sent successfully....");
       
       } catch (MessagingException mex) {
-         mex.printStackTrace();
+         throw new DLException(mex);
       }
-   
-      if (exists) {
-         System.out.println("---------Update Password---------");
-         System.out.print("Enter the Token sent to your email: ");
-         Scanner scnToken = new Scanner(System.in);
-         resetPasswordToken = scnToken.next();
-      
-         System.out.print("Enter new password: ");
-         Scanner scnPassword = new Scanner(System.in);
-         password = scnPassword.next();
-         password = toHexString(getSHA(password)); // HASHED
-      
-         try {
-            db.setData("SELECT resetPasswordExpires FROM users WHERE email = ? and resetPasswordToken = ?");
-            //preparedStmt.setString(1, email);
-            //preparedStmt.setString(2, resetPasswordToken);
-            //ResultSet resultSet = preparedStmt.executeQuery();
-         
-           /* if (resultSet.next()) {
-               long passwordExpiresTime = resultSet.getLong("resetPasswordExpires");
-               long currentTime = System.currentTimeMillis();
-               if (passwordExpiresTime > currentTime) {
-                  try {
-                     // create our java preparedstatement using a sql update query
-                     PreparedStatement ps = connection.prepareStatement(
-                             "UPDATE users SET pswd = ? WHERE email = ? and resetPasswordToken = ?");
-                  
-                     // set the prepared statement parameters
-                     ps.setString(1,password);
-                     ps.setString(2, email);
-                     ps.setString(3,resetPasswordToken);
-                  
-                     // call executeUpdate to execute our sql update statement
-                     ps.executeUpdate();
-                     ps.close();
-                     System.out.println("New Password Created, Please use new password to login");
-                  } catch (SQLException se) {
-                     // log the exception
-                     se.printStackTrace();
-                     System.out.println("update error: " +se);
-                  }
-               } else {
-                  System.out.println("Reset Password Token Has Expired! Please reset password again: ");
-               }
-            }
-         
-            preparedStmt.close();
-         */
-         }
-         catch (Exception se) //--------CHANGE TO SQLEXCEPTION LATER MAYBE - EDWARD
-         {            // log the exception
-            se.printStackTrace();
-         }
-      }
+
    }
 
 
@@ -805,9 +657,9 @@ private MySQLDatabase  connect() throws DLException {
     * 
     * This is used to set up the email formats and reset the password
     *
-    * 
+    * @throws DLException if anything goes wrong
     */
-   public void resetPassword(){
+   public void resetPassword() throws DLException{
    
       // Set the String named fromEmail
       String fromEmail = "Javahelpprogram330@gmail.com";
@@ -860,11 +712,10 @@ private MySQLDatabase  connect() throws DLException {
       
          // To add the message and display it
          Transport.send(message);
-         System.out.println("Sent message successfully....");
       } 
       // To catch any errors and display the message
       catch (MessagingException e) {
-         e.printStackTrace();
+         throw new DLException(e);
       }
    }
    
@@ -872,9 +723,9 @@ private MySQLDatabase  connect() throws DLException {
     * This is used to set up the StringBuilder and insert the bytes
     *
     * @param input is to get the user input
-    * 
+    * @throws DLException if anything goes wrong
     */
-   public static byte[] getSHA(String input) {
+   public static byte[] getSHA(String input) throws DLException{
       // Static getInstance method is called with hashing SHA  
       try {
          MessageDigest md = MessageDigest.getInstance("SHA-256");  
@@ -882,8 +733,7 @@ private MySQLDatabase  connect() throws DLException {
       }
       // To find the error and display the message
       catch (Exception e) {
-         System.out.println("Unexpected Error at Hashing... " + e.toString() + " \nContact the system administrator immediately!");
-         return null;
+         throw new DLException(e);
       }
    }
    
