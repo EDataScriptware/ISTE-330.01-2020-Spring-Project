@@ -42,7 +42,6 @@ import java.security.NoSuchAlgorithmException;
 public class User {
 
    // All attributes are created 
-   Connection connection;
    String userID;
    String lastName;
    String firstName;
@@ -55,17 +54,10 @@ public class User {
    String affiliationId;
    String affilationName;
    String resetPasswordToken;
-
+   
+   MySQLDatabase db = new MySQLDatabase();
   
    //getters and setters
-   public Connection getConnection() {
-      return connection;
-   }
-
-   public void setConnection(Connection connection) {
-      this.connection = connection;
-   }
-
    public String getUserID() {
       return userID;
    }
@@ -185,8 +177,7 @@ public class User {
     * 
     */   
       // All attributes are created 
-  
-      connection = null;
+
       userID = null;
       lastName = null;
       firstName = null;
@@ -197,6 +188,8 @@ public class User {
       dateOfExpiration = null;
       affiliationId = null; // '1' for yes / '0' value for no
       resetPasswordToken = null;
+
+
    }
 
    public User(String userID) {
@@ -282,10 +275,9 @@ private MySQLDatabase  connect() throws DLException {
           }
 
          try {
+            // Instantiates this database
+            db.connect();
 
-
-        // Instantiates this database and then connect it
-         MySQLDatabase db = connect();
 
             // Set up the array named values and get data
             ArrayList<String> values = new ArrayList<>();
@@ -394,14 +386,14 @@ private MySQLDatabase  connect() throws DLException {
    public boolean checkEmail (String email) {
       boolean isEmailFound = false;
       try{
-         PreparedStatement preparedStmt = connection.prepareStatement("SELECT email FROM  users WHERE email= ?");
-         preparedStmt.setString(1, email);
-         ResultSet resultSet = preparedStmt.executeQuery();
+         db.setData("SELECT email FROM users WHERE email= ?");
+         // preparedStmt.setString(1, email);
+         // ResultSet resultSet = preparedStmt.executeQuery();
       
-         if (resultSet.next()) {
-            isEmailFound = true;
-            System.out.println("Row with email found: " +resultSet.getString("email"));
-         }
+         //if (resultSet.next()) {
+         //   isEmailFound = true;
+         //   System.out.println("Row with email found: " +resultSet.getString("email"));
+         //}
       
       }
       catch(Exception ex){
@@ -511,14 +503,7 @@ private MySQLDatabase  connect() throws DLException {
     */
    
    
-   
-   /**
-    *
-    * To insert the User ID
-    *
-    * No parameters are used
-    *
-    */
+  
    /**
     *
     * To insert the User ID
@@ -530,11 +515,8 @@ private MySQLDatabase  connect() throws DLException {
       // Instantiates this database and then connect it
    MySQLDatabase db = connect();
 
-   
     int newID = Integer.parseInt(db.getData("select MAX(userID) FROM USERS").get(0).get(0) ) + 1;
      setUserID(newID + ""); 
-  
-
  
    // Set up the array named tempList
    ArrayList<String> tempList = new ArrayList<String>();
@@ -554,7 +536,6 @@ private MySQLDatabase  connect() throws DLException {
       return r;
  
     }
- 
  
     public int put() throws DLException {
       // Instantiates this database and then connect it
@@ -580,8 +561,7 @@ private MySQLDatabase  connect() throws DLException {
  
  
     }
-    
-   
+       
    /**
     * 
     * A While Loop is to find the total fields and list for the query statement
@@ -601,28 +581,29 @@ private MySQLDatabase  connect() throws DLException {
          MySQLDatabase db = connect();
          Connection connection = db.getConnection();
          // Set up the prepared statement named stmt for the query
-         PreparedStatement stmt = connection.prepareStatement(query);
+         // PreparedStatement stmt = connection.prepareStatement(query);
          
          // A For Statements starts here
          for(int i = 0; i < list.size(); i++){
-            stmt.setString(i + 1, list.get(i));
+            // stmt.setString(i + 1, list.get(i));
          }
          // To execute the query and put it in result
-         ResultSet result = stmt.executeQuery();
+         // ResultSet result = stmt.executeQuery();
          
          // row starts with zero
          int row = 0;
          
          // A While Loop starts here
-         while(result.next()){
+         
+         /*while(result.next()){
          
             for(int i = 0; i < totalFeilds; i++) {
                reSet.add(result.getObject(i + 1));
             }
             row++; // Add row
-         }
-         // Statement is closed
-         stmt.close();
+         }*/
+         
+         // Database is closed
          db.close();
       }
       // To find any error and display the error message
@@ -646,12 +627,10 @@ private MySQLDatabase  connect() throws DLException {
     *
     */
     public String login(String em, String pass) {
-   
+ 
       // Setting email and password strings
        email = em;   
        password = pass;
-
-
        password = toHexString(getSHA(password)); // HASHED
        
        // Set up the array named tempList
@@ -707,19 +686,19 @@ private MySQLDatabase  connect() throws DLException {
          try
          {
             // create our java preparedstatement using a sql update query
-            PreparedStatement ps = connection.prepareStatement(
+            db.setData(
                     "UPDATE users SET resetPasswordToken = ?, resetPasswordExpires = ? WHERE email = ?");
          
             // set the prepared statement parameters
-            ps.setString(1,randomPassword);
-            ps.setLong(2,passwordExpiryDate);
-            ps.setString(3,email);
+            // ps.setString(1,randomPassword);
+            // ps.setLong(2,passwordExpiryDate);
+            // ps.setString(3,email);
          
             // call executeUpdate to execute our sql update statement
-            ps.executeUpdate();
-            ps.close();
+            // ps.executeUpdate();
+            // ps.close();
          }
-         catch (SQLException se)
+         catch (Exception se) //--------CHANGE TO SQLEXCEPTION LATER MAYBE - EDWARD
          {
             // log the exception
             se.printStackTrace();
@@ -780,12 +759,12 @@ private MySQLDatabase  connect() throws DLException {
          password = toHexString(getSHA(password)); // HASHED
       
          try {
-            PreparedStatement preparedStmt = connection.prepareStatement("SELECT resetPasswordExpires FROM  users WHERE email= ? and resetPasswordToken = ?");
-            preparedStmt.setString(1, email);
-            preparedStmt.setString(2, resetPasswordToken);
-            ResultSet resultSet = preparedStmt.executeQuery();
+            db.setData("SELECT resetPasswordExpires FROM users WHERE email = ? and resetPasswordToken = ?");
+            //preparedStmt.setString(1, email);
+            //preparedStmt.setString(2, resetPasswordToken);
+            //ResultSet resultSet = preparedStmt.executeQuery();
          
-            if (resultSet.next()) {
+           /* if (resultSet.next()) {
                long passwordExpiresTime = resultSet.getLong("resetPasswordExpires");
                long currentTime = System.currentTimeMillis();
                if (passwordExpiresTime > currentTime) {
@@ -814,9 +793,10 @@ private MySQLDatabase  connect() throws DLException {
             }
          
             preparedStmt.close();
-         
-         } catch (SQLException se) {
-            // log the exception
+         */
+         }
+         catch (Exception se) //--------CHANGE TO SQLEXCEPTION LATER MAYBE - EDWARD
+         {            // log the exception
             se.printStackTrace();
          }
       }
@@ -825,6 +805,72 @@ private MySQLDatabase  connect() throws DLException {
 
    /**
     * 
+    * This is used to set up the email formats and reset the password
+    *
+    * 
+    */
+   public void resetPassword(){
+   
+      // Set the String named fromEmail
+      String fromEmail = "Javahelpprogram330@gmail.com";
+   
+      // Set the String name toEmail within the email 
+      String toEmail = email;
+   
+      // Assuming you are sending email from through gmails smtp
+      String host = "smtp.gmail.com";
+   
+      // Get system properties
+      Properties properties = System.getProperties();
+   
+      // Setup mail server
+      properties.put("mail.smtp.host", host);
+      properties.put("mail.smtp.port", "465");
+      properties.put("mail.smtp.ssl.enable", "true");
+      properties.put("mail.smtp.auth", "true");
+   
+      // Get the Session object.// and pass username and password
+      Session session = Session.getInstance(properties, 
+         new javax.mail.Authenticator() {
+            protected PasswordAuthentication getPasswordAuthentication() {
+               // Return the email and password
+               return new PasswordAuthentication("javahelpprogram330@gmail.com", "student0808");
+            }
+         });
+   
+      // Used to debug SMTP issues
+      // session.setDebug(true);
+      //Start our mail message
+      MimeMessage msg = new MimeMessage(session);
+      try {
+         // Create a default MimeMessage object.
+         MimeMessage message = new MimeMessage(session);
+      
+         // Set From: header field of the header.
+         message.setFrom(new InternetAddress(fromEmail));
+      
+         // Set To: header field of the header.
+         message.addRecipient(Message.RecipientType.TO, new InternetAddress(toEmail));
+      
+         // Set Subject: header field
+         message.setSubject("Your Account Information ");
+      
+         // Now set the actual message
+         message.setText("You are logged in now.\n\n Email: " + email + "\n\n If you forgot the password, please follow this instruction below \n\n Instruction:\n\n 1. When program file runs \n\n 2. Type [F] or Forgot Password \n\n 3. You may reset your password with token");
+         
+         
+      
+         // To add the message and display it
+         Transport.send(message);
+         System.out.println("Sent message successfully....");
+      } 
+      // To catch any errors and display the message
+      catch (MessagingException e) {
+         e.printStackTrace();
+      }
+   }
+   
+   /**
     * This is used to set up the StringBuilder and insert the bytes
     *
     * @param input is to get the user input

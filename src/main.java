@@ -35,7 +35,6 @@ public class main {
          
         
          // Connect to the papers java file 
-         Paper papers = new Paper();
          // Connect user java file to the MySQLDatabase
          User user = new User();
          User user2 = new User();

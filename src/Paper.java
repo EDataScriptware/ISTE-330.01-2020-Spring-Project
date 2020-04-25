@@ -195,21 +195,21 @@ public class Paper {
 
             // Set up the array named values and get data
             ArrayList<String> values = new ArrayList<>();
-            ArrayList<String> list = db.getData("SELECT * FROM papers WHERE paperID = " + getPaperID()).get(0);
+            ArrayList<String> list = db.getData("SELECT title, abstract, track, status, submissionType, submitterId, fileID, tentativeStatus FROM papers WHERE paperID = " + getPaperID()).get(0);
 
             int submissionTypeID;
             
             // To set data to match 
             if (list.size() > 2) {
 
-                setTitle(list.get(1));
-                setAbstract(list.get(2));
-                setTrack(list.get(3));
-                setStatus(list.get(4));
-                submissionTypeID = Integer.parseInt(list.get(5));
-                setSubmitterID(Integer.parseInt(list.get(6)));
-                setFileID(list.get(7));
-                setTentativeStatus(list.get(8));
+                setTitle(list.get(0));
+                setAbstract(list.get(1));
+                setTrack(list.get(2));
+                setStatus(list.get(3));
+                submissionTypeID = Integer.parseInt(list.get(4));
+                setSubmitterID(Integer.parseInt(list.get(5)));
+                setFileID(list.get(6));
+                setTentativeStatus(list.get(7));
 
             } 
             // When there is no data return, display the error
@@ -282,6 +282,7 @@ public class Paper {
 
 
         // Update paperSubjects
+
 
         // Database is closed
         db.close();
