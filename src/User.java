@@ -56,111 +56,110 @@ public class User {
    String resetPasswordToken;
    
    MySQLDatabase db = new MySQLDatabase();
-
-
+  
    //getters and setters
+   public String getUserID() {
+      return userID;
+   }
 
-      public String getUserID() {
-         return userID;
-      }
+   public void setUserID(String userID) {
+      this.userID = userID;
+   }
 
-      public void setUserID(String userID) {
-         this.userID = userID;
-      }
+   public String getLastName() {
+      return lastName;
+   }
 
-      public String getLastName() {
-         return lastName;
-      }
+   public void setLastName(String lastName) {
+      this.lastName = lastName;
+   }
 
-      public void setLastName(String lastName) {
-         this.lastName = lastName;
-      }
+   public String getFirstName() {
+      return firstName;
+   }
 
-      public String getFirstName() {
-         return firstName;
-      }
+   public void setFirstName(String firstName) {
+      this.firstName = firstName;
+   }
 
-      public void setFirstName(String firstName) {
-         this.firstName = firstName;
-      }
+   public String getEmail() {
+      return email;
+   }
 
-      public String getEmail() {
-         return email;
-      }
+   public void setEmail(String email) {
+      this.email = email;
+   }
 
-      public void setEmail(String email) {
-         this.email = email;
-      }
+   public String getPassword() {
+      return password;
+   }
 
-      public String getPassword() {
-         return password;
-      }
+   public void setPassword(String password) {
+      this.password = password;
+   }
 
-      public void setPassword(String password) {
-         this.password = password;
-      }
+   public String getVerifyPassword() {
+      return verifyPassword;
+   }
 
-      public String getVerifyPassword() {
-         return verifyPassword;
-      }
+   public void setVerifyPassword(String verifyPassword) {
+      this.verifyPassword = verifyPassword;
+   }
 
-      public void setVerifyPassword(String verifyPassword) {
-         this.verifyPassword = verifyPassword;
-      }
+   public String getCanReview() {
+      return canReview;
+   }
 
-      public String getCanReview() {
-         return canReview;
-      }
+   public void setCanReview(String canReview) {
+      this.canReview = canReview;
+   }
 
-      public void setCanReview(String canReview) {
-         this.canReview = canReview;
-      }
+   public Date getDateOfExpiration() {
+      return dateOfExpiration;
+   }
 
-      public Date getDateOfExpiration() {
-         return dateOfExpiration;
-      }
+   public void setDateOfExpiration(Date dateOfExpiration) {
+      this.dateOfExpiration = dateOfExpiration;
+   }
 
-      public void setDateOfExpiration(Date dateOfExpiration) {
-         this.dateOfExpiration = dateOfExpiration;
-      }
+   public String getIsAdmin() {
+      return isAdmin;
+   }
 
-      public String getIsAdmin() {
-         return isAdmin;
-      }
+   public void setIsAdmin(String isAdmin) {
+      this.isAdmin = isAdmin;
+   }
 
-      public void setIsAdmin(String isAdmin) {
-         this.isAdmin = isAdmin;
-      }
+   public String getAffiliationId() {
+      return affiliationId;
+   }
 
-      public String getAffiliationId() {
-         return affiliationId;
-      }
+   public void setAffiliationId(String affiliationId) {
+      this.affiliationId = affiliationId;
+   }
 
-      public void setAffiliationId(String affiliationId) {
-         this.affiliationId = affiliationId;
-      }
+   public String getAffilationName() {
+      return affilationName;
+   }
 
-      public String getAffilationName() {
-         return affilationName;
-      }
+   public void setAffilationName(String affilationName) {
+      this.affilationName = affilationName;
+   }
 
-      public void setAffilationName(String affilationName) {
-         this.affilationName = affilationName;
-      }
+   public String getResetPasswordToken() {
+      return resetPasswordToken;
+   }
 
-      public String getResetPasswordToken() {
-         return resetPasswordToken;
-      }
+   public void setResetPasswordToken(String resetPasswordToken) {
+      this.resetPasswordToken = resetPasswordToken;
+   }
 
-      public void setResetPasswordToken(String resetPasswordToken) {
-         this.resetPasswordToken = resetPasswordToken;
-      }
 
-      public User(Connection conn)
+
+   public User()
    {
    
-   
-   /**
+    /**
     * 
     * Setting up the attributes to prepare for the connection and user's data information
     *
@@ -178,6 +177,7 @@ public class User {
     * 
     */   
       // All attributes are created 
+
       userID = null;
       lastName = null;
       firstName = null;
@@ -192,13 +192,66 @@ public class User {
 
    }
 
+   public User(String userID) {
+      this.userID = userID;
+
+      connection = null;
+      lastName = null;
+      firstName = null;
+      email = null;
+      password = null;
+      verifyPassword = null;
+      canReview = null; // '1' for yes / NULL value for no
+      dateOfExpiration = null;
+      affiliationId = null; // '1' for yes / '0' value for no
+      resetPasswordToken = null;
+}
+
+private MySQLDatabase  connect() throws DLException {
+   MySQLDatabase db = new MySQLDatabase();
+   db.connect();
+   connection = db.getConnection();
+   return db;
+}
+/**
+    *
+    * This is used to set up the affilation for each user
+    *
+    * @para Affilation is the user's unique ID number
+    *
+    */
+    public String convertAffilatiionID(String Affilation) throws DLException{
+   
+      // Set up the string named idTemp
+      String idTemp = 0 + "";
+       // Set up the array named tempList
+       ArrayList<String> tempList = new ArrayList<String>();
+       // Added Affilation to the tempList
+       tempList.add(Affilation);
+       // Set up the second array named results to get the data
+       ArrayList<Object> results  = getData("SELECT affiliationID FROM _affiliations WHERE affiliationName =?;", 1, tempList);
+       // To find the ID number
+       if(results.size() > 0){
+          idTemp = results.get(0) + "";
+          affilationName = Affilation;
+       }
+       // If the affilation cannot be founded, it will display the message in the output to let the user knows
+       else{
+          affilationName = "Unknown";
+       }
+
+      // return
+      return idTemp;
+   }
+
+
+
+      
       /**
        *
        * @param userID Id for this user object
        */
-   public User(String userID) {
-         this.userID = userID;
-   }
+
 
       /**
        *
@@ -219,12 +272,12 @@ public class User {
                return;
             }
 
-         }
+          }
 
          try {
-
             // Instantiates this database
             db.connect();
+
 
             // Set up the array named values and get data
             ArrayList<String> values = new ArrayList<>();
@@ -265,9 +318,8 @@ public class User {
    public void fetch() throws DLException {
       try {
 
-         // Instantiates this database
-         MySQLDatabase db = new MySQLDatabase();
-         db.connect();
+          // Instantiates this database and then connect it
+         MySQLDatabase db = connect();
 
          // Set up the array named values and get data
          ArrayList<String> values = new ArrayList<>();
@@ -295,6 +347,27 @@ public class User {
       }
    }
    
+   public ArrayList<Object> getPapers(int uID){
+      ArrayList<String> tempList = new ArrayList<String>();
+      // Added both email and password to the tempList
+      tempList.add(uID + "");
+      return getData("Select Papers.title FROM Papers INNER JOIN PaperAuthors ON Papers.paperId = PaperAuthors.paperId WHERE PaperAuthors.userId =? ;", 1, tempList);
+  }
+
+   public ArrayList<String> getUser(){
+      ArrayList<String> tempList = new ArrayList<String>();
+      // Added both email and password to the tempList
+      tempList.add(userID);
+      tempList.add(firstName);
+      tempList.add(lastName);
+      tempList.add(email);
+      tempList.add(affiliationId);
+      tempList.add(isAdmin);
+      return tempList;
+   }
+
+
+
    public void forgotPassword () {
       System.out.println("---------FORGOT PASSWORD---------");
       System.out.print("Enter your email: ");
@@ -332,16 +405,37 @@ public class User {
       return isEmailFound;
    }
 
-   
+   public void setUser( String lN,String fN, String em, String pass,  String aff) throws DLException{
+
+      setLastName(lN);
+      setFirstName(fN);
+      setPassword(pass);
+      password = toHexString(getSHA(password)); // HASHED
+      setEmail(em);
+      // Enter the user's affiliation
+      setAffilationName(aff);
+      setAffiliationId(convertAffilatiionID(aff));
+      
+    if(userID == null){
+
+      post();
+    }
+      else
+      put();
+
+      
+   } 
    
    /**
+    * 
+    OUTDATED METHOD - We can remove this
     *
     * A While Loop is running while the user is doing with 
     * the registration of their account
     *
     * No parameters are used
     *
-    */
+   
    public void register() {
       
       // Set it to be true
@@ -381,7 +475,8 @@ public class User {
          // Enter the user's affiliation
          System.out.print("Enter your Affiliation: ");
          Scanner scnAfId = new Scanner(System.in);
-         affiliationId = getAffilatiionID(scnAfId.nextLine());
+        
+         affiliationId = convertAffilatiionID(scnAfId.nextLine());
       
          // When everything is finished, it will display the summary of the user's information (Name, Password, Email, and Affilication)
          if (verifyPassword.equals(password)) {
@@ -397,7 +492,7 @@ public class User {
             System.out.println("Verfied Password: " + verifyPassword);
          }
       }   
-   } 
+   }  */
 
    /**
     *
@@ -406,42 +501,9 @@ public class User {
     * @para Affilation is the user's unique ID number
     *
     */
-   public String getAffilatiionID(String Affilation) {
-   
-      // Set up the string named idTemp
-      String idTemp = 0 + "";
-      
-      try {
-         
-         // Set up the array named tempList
-         ArrayList<String> tempList = new ArrayList<String>();
-         // Added Affilation to the tempList
-         tempList.add(Affilation);
-         // Set up the second array named results to get the data
-         ArrayList<Object> results  = getData("SELECT affiliationID FROM _affiliations WHERE affiliationName =?;", 1, tempList);
-         // To find the ID number
-         if(results.size() > 0){
-            idTemp = results.get(0) + "";
-            System.out.println("aID Number: " + idTemp);
-            affilationName = Affilation;
-         }
-         // If the affilation cannot be founded, it will display the message in the output to let the user knows
-         else{
-            System.out.println("Couldn't find Affilation of " + Affilation +  "\nMarking as unknown group");
-            affilationName = "Unknown";
-         }
-      }
-      // To catch any errors and display the error messages
-      catch(Exception ex){
-         ex.printStackTrace();
-         System.out.println("SQLException: " + ex.getMessage());
-         System.out.println("SQLException: " + ex);
-      }
-      // return
-      return idTemp;
-   }
    
    
+  
    /**
     *
     * To insert the User ID
@@ -449,27 +511,57 @@ public class User {
     * No parameters are used
     *
     */
-   public void insertUser(){
-   
-      try {
-         // Selects the user id from USERS 
-         int newID = Integer.parseInt((getData("select MAX(userID) FROM USERS", 1, new ArrayList<String>()).get(0) + "").trim()) + 1;
-         userID = newID + "";
-         // Prepare the statement for inserting into USERS
-         db.setData("INSERT INTO USERS (userID , firstName, lastName, pswd, email, affiliationId) VALUES (" + userID + " ,'" + firstName + "','" + lastName + "','" + password +"','" + email +"','" + affiliationId + "');");
+    public int post() throws DLException{
+      // Instantiates this database and then connect it
+   MySQLDatabase db = connect();
+
+    int newID = Integer.parseInt(db.getData("select MAX(userID) FROM USERS").get(0).get(0) ) + 1;
+     setUserID(newID + ""); 
+ 
+   // Set up the array named tempList
+   ArrayList<String> tempList = new ArrayList<String>();
+   // Added both email and password to the tempList
+   tempList.add(userID);
+   tempList.add(firstName);
+   tempList.add(lastName);
+   tempList.add(password);
+   tempList.add(email);
+   tempList.add(affiliationId);
+   System.out.println("adding");
+   int r = db.setData(" INSERT INTO USERS (userID , firstName, lastName, pswd, email, affiliationId) VALUES (?,?,?,?,?,?);", tempList);
+    // Database is closed
+
+     db.close();
+     // Return
+      return r;
+ 
+    }
+ 
+    public int put() throws DLException {
+      // Instantiates this database and then connect it
+      MySQLDatabase db = connect();
          
-         // To get the prepared statement executed 
-         // preparedStmt.executeUpdate();
-      
-      }
-      // To catch any errors and display the error messages
-      catch(Exception ex){
-         ex.printStackTrace();
-         System.out.println("SQLException: " + ex.getMessage());
-         System.out.println("SQLException: " + ex);
-      }
-   }
-   
+      // Set up the array named tempList
+      ArrayList<String> tempList = new ArrayList<String>();
+      // Added both email and password to the tempList
+      tempList.add(firstName);
+      tempList.add(lastName);
+      tempList.add(password);
+      tempList.add(email);
+      tempList.add(affiliationId);
+      tempList.add(userID);
+ 
+      int r = db.setData("UPDATE USERS SET firstName = ? , lastName = ?, pswd = ?, email = ?, affiliationId = ? WHERE userID = ? ", tempList);
+ 
+     // Database is closed
+     db.close();
+     
+     // Return
+     return r;
+ 
+ 
+    }
+       
    /**
     * 
     * A While Loop is to find the total fields and list for the query statement
@@ -480,13 +572,14 @@ public class User {
     * 
     */
 
-   public ArrayList<Object> getData(String query, int totalFeilds, ArrayList<String> list) {
+    public ArrayList<Object> getData(String query, int totalFeilds, ArrayList<String> list) {
       
       // Set up the array named reSet
       ArrayList<Object> reSet = new ArrayList<Object>();
       
       try {
-      
+         MySQLDatabase db = connect();
+         Connection connection = db.getConnection();
          // Set up the prepared statement named stmt for the query
          // PreparedStatement stmt = connection.prepareStatement(query);
          
@@ -510,8 +603,8 @@ public class User {
             row++; // Add row
          }*/
          
-         // Statement is closed
-         // stmt.close();
+         // Database is closed
+         db.close();
       }
       // To find any error and display the error message
       catch(Exception ex){
@@ -524,6 +617,7 @@ public class User {
    }
    
    
+      
    /**
     *
     * A While Loop is running while the user is doing with 
@@ -532,55 +626,37 @@ public class User {
     * No parameters are used
     *
     */
-   public void login() {
-   
-      // Set it to be true
-      boolean repeatFlag = true;
-   
-      // A While Loop starts here
-      while (repeatFlag == true) {
-         System.out.println("---------LOGIN---------");
-         
-         // Enter the user's email
-         System.out.print("Enter your email: ");
-         Scanner scnEmail = new Scanner(System.in);
-         email = scnEmail.next();
-         
-         // Enter the user's password
-         System.out.print("Enter your password: ");
-         Scanner scnPassword = new Scanner(System.in); 
-         password = scnPassword.next();
-         password = toHexString(getSHA(password)); // HASHED
-         // Set up the array named tempList
-         ArrayList<String> tempList = new ArrayList<String>();
-         // Added both email and password to the tempList
-         tempList.add(email);
-         tempList.add(password);
-         // Set up another array named results 
-         ArrayList<Object> results = getData("Select userID, firstName, lastName, affiliationId, canReview, isAdmin FROM USERS WHERE email =?  AND pswd =? ;", 6, tempList);
-        
-         // A For Statement starts here
-         if(results.size() > 0) {
-            userID = results.get(0) + "";
-            firstName = results.get(1) + "";
-            lastName = results.get(2) + "";
-            affiliationId = results.get(3) + "";
-            canReview = results.get(4) + "";
-            isAdmin = results.get(5) + "";
-            repeatFlag = false;
-         }
-         
-         // To display the error message of email or password
-         else {
-            System.out.println("Incorrect Email or Password");
-         }
+    public String login(String em, String pass) {
+ 
+      // Setting email and password strings
+       email = em;   
+       password = pass;
+       password = toHexString(getSHA(password)); // HASHED
+       
+       // Set up the array named tempList
+       ArrayList<String> tempList = new ArrayList<String>();
+       // Added both email and password to the tempList
+       tempList.add(email);
+       tempList.add(password);
+       // Set up another array named results 
+       ArrayList<Object> results = getData("Select userID, firstName, lastName, affiliationId, canReview, isAdmin FROM USERS WHERE email =?  AND pswd =? ;", 6, tempList);
       
-      }
-      // To display the summary of the user's name, lastname, password, email, and affilation
-      System.out.println("Name: " + firstName + "\nlastName: " + lastName +   "\nPassword: " + password +"\nEmail: " + email + "\nAffilation: " + affiliationId); 
-      // To reset the password
-      resetPassword();
-   }
+       // A For Statement starts here
+       if(results.size() > 0) {
+          userID = results.get(0) + "";
+          firstName = results.get(1) + "";
+          lastName = results.get(2) + "";
+          affiliationId = results.get(3) + "";
+          canReview = results.get(4) + "";
+          isAdmin = results.get(5) + "";     
+       }
+       
+   
+    
+    // To display the summary of the user's name, lastname, password, email, and affilation
+ // System.out.println("Name: " + firstName + "\nlastName: " + lastName +   "\nPassword: " + password +"\nEmail: " + email + "\nAffilation: " + affiliationId); 
+ return password;
+ }
 
    public void newResetPassword(String email, boolean exists) {
       String emailMessage;
@@ -795,7 +871,6 @@ public class User {
    }
    
    /**
-    * 
     * This is used to set up the StringBuilder and insert the bytes
     *
     * @param input is to get the user input
