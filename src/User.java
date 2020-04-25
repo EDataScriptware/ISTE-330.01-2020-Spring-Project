@@ -195,7 +195,6 @@ public class User {
    public User(String userID) {
       this.userID = userID;
 
-      connection = null;
       lastName = null;
       firstName = null;
       email = null;
@@ -210,7 +209,6 @@ public class User {
 private MySQLDatabase  connect() throws DLException {
    MySQLDatabase db = new MySQLDatabase();
    db.connect();
-   connection = db.getConnection();
    return db;
 }
 /**
