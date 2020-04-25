@@ -42,7 +42,6 @@ import java.security.NoSuchAlgorithmException;
 public class User {
 
    // All attributes are created 
-   Connection connection;
    String userID;
    String lastName;
    String firstName;
@@ -55,15 +54,11 @@ public class User {
    String affiliationId;
    String affilationName;
    String resetPasswordToken;
+   
+   MySQLDatabase db = new MySQLDatabase();
+
 
    //getters and setters
-      public Connection getConnection() {
-         return connection;
-      }
-
-      public void setConnection(Connection connection) {
-         this.connection = connection;
-      }
 
       public String getUserID() {
          return userID;
@@ -183,7 +178,6 @@ public class User {
     * 
     */   
       // All attributes are created 
-      connection = conn;
       userID = null;
       lastName = null;
       firstName = null;
@@ -194,6 +188,8 @@ public class User {
       dateOfExpiration = null;
       affiliationId = null; // '1' for yes / '0' value for no
       resetPasswordToken = null;
+
+
    }
 
       /**
@@ -228,7 +224,6 @@ public class User {
          try {
 
             // Instantiates this database
-            MySQLDatabase db = new MySQLDatabase();
             db.connect();
 
             // Set up the array named values and get data
@@ -318,14 +313,14 @@ public class User {
    public boolean checkEmail (String email) {
       boolean isEmailFound = false;
       try{
-         PreparedStatement preparedStmt = connection.prepareStatement("SELECT email FROM  users WHERE email= ?");
-         preparedStmt.setString(1, email);
-         ResultSet resultSet = preparedStmt.executeQuery();
+         db.setData("SELECT email FROM users WHERE email= ?");
+         // preparedStmt.setString(1, email);
+         // ResultSet resultSet = preparedStmt.executeQuery();
       
-         if (resultSet.next()) {
-            isEmailFound = true;
-            System.out.println("Row with email found: " +resultSet.getString("email"));
-         }
+         //if (resultSet.next()) {
+         //   isEmailFound = true;
+         //   System.out.println("Row with email found: " +resultSet.getString("email"));
+         //}
       
       }
       catch(Exception ex){
@@ -461,10 +456,10 @@ public class User {
          int newID = Integer.parseInt((getData("select MAX(userID) FROM USERS", 1, new ArrayList<String>()).get(0) + "").trim()) + 1;
          userID = newID + "";
          // Prepare the statement for inserting into USERS
-         PreparedStatement preparedStmt = connection.prepareStatement("INSERT INTO USERS (userID , firstName, lastName, pswd, email, affiliationId) VALUES (" + userID + " ,'" + firstName + "','" + lastName + "','" + password +"','" + email +"','" + affiliationId + "');");
+         db.setData("INSERT INTO USERS (userID , firstName, lastName, pswd, email, affiliationId) VALUES (" + userID + " ,'" + firstName + "','" + lastName + "','" + password +"','" + email +"','" + affiliationId + "');");
          
          // To get the prepared statement executed 
-         preparedStmt.executeUpdate();
+         // preparedStmt.executeUpdate();
       
       }
       // To catch any errors and display the error messages
@@ -493,28 +488,30 @@ public class User {
       try {
       
          // Set up the prepared statement named stmt for the query
-         PreparedStatement stmt = connection.prepareStatement(query);
+         // PreparedStatement stmt = connection.prepareStatement(query);
          
          // A For Statements starts here
          for(int i = 0; i < list.size(); i++){
-            stmt.setString(i + 1, list.get(i));
+            // stmt.setString(i + 1, list.get(i));
          }
          // To execute the query and put it in result
-         ResultSet result = stmt.executeQuery();
+         // ResultSet result = stmt.executeQuery();
          
          // row starts with zero
          int row = 0;
          
          // A While Loop starts here
-         while(result.next()){
+         
+         /*while(result.next()){
          
             for(int i = 0; i < totalFeilds; i++) {
                reSet.add(result.getObject(i + 1));
             }
             row++; // Add row
-         }
+         }*/
+         
          // Statement is closed
-         stmt.close();
+         // stmt.close();
       }
       // To find any error and display the error message
       catch(Exception ex){
@@ -613,19 +610,19 @@ public class User {
          try
          {
             // create our java preparedstatement using a sql update query
-            PreparedStatement ps = connection.prepareStatement(
+            db.setData(
                     "UPDATE users SET resetPasswordToken = ?, resetPasswordExpires = ? WHERE email = ?");
          
             // set the prepared statement parameters
-            ps.setString(1,randomPassword);
-            ps.setLong(2,passwordExpiryDate);
-            ps.setString(3,email);
+            // ps.setString(1,randomPassword);
+            // ps.setLong(2,passwordExpiryDate);
+            // ps.setString(3,email);
          
             // call executeUpdate to execute our sql update statement
-            ps.executeUpdate();
-            ps.close();
+            // ps.executeUpdate();
+            // ps.close();
          }
-         catch (SQLException se)
+         catch (Exception se) //--------CHANGE TO SQLEXCEPTION LATER MAYBE - EDWARD
          {
             // log the exception
             se.printStackTrace();
@@ -686,12 +683,12 @@ public class User {
          password = toHexString(getSHA(password)); // HASHED
       
          try {
-            PreparedStatement preparedStmt = connection.prepareStatement("SELECT resetPasswordExpires FROM  users WHERE email= ? and resetPasswordToken = ?");
-            preparedStmt.setString(1, email);
-            preparedStmt.setString(2, resetPasswordToken);
-            ResultSet resultSet = preparedStmt.executeQuery();
+            db.setData("SELECT resetPasswordExpires FROM users WHERE email = ? and resetPasswordToken = ?");
+            //preparedStmt.setString(1, email);
+            //preparedStmt.setString(2, resetPasswordToken);
+            //ResultSet resultSet = preparedStmt.executeQuery();
          
-            if (resultSet.next()) {
+           /* if (resultSet.next()) {
                long passwordExpiresTime = resultSet.getLong("resetPasswordExpires");
                long currentTime = System.currentTimeMillis();
                if (passwordExpiresTime > currentTime) {
@@ -720,9 +717,10 @@ public class User {
             }
          
             preparedStmt.close();
-         
-         } catch (SQLException se) {
-            // log the exception
+         */
+         }
+         catch (Exception se) //--------CHANGE TO SQLEXCEPTION LATER MAYBE - EDWARD
+         {            // log the exception
             se.printStackTrace();
          }
       }
